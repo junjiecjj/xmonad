@@ -22,11 +22,15 @@ Config {
     -- position = Static { xpos = 1920, ypos = 0, width = 1692, height = 19 },
     position = TopP 0 276,
     -- position = Static { xpos = 0 , ypos = 0, width = 1920, height = 24 }
-    -- font = "xft:monospace-8",
-    -- font = "xft:WenQuanYi Zen Hei Mono-12",
-    font = "xft:CaskaydiaCove Nerd Font Mono-10",
+    -- font = "xft:monospace:pixelsize=8",
+    -- font = "xft:WenQuanYi Micro Hei:style=Regular:pixelsize=15",
+    -- font = "xft:CaskaydiaCove Nerd Font Mono:style=ExtraLight:pixelsize=15",
+    -- font = "xft:CaskaydiaCove Nerd Font Mono:style=Light:pixelsize=15",
+    font = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=15",
     bgColor = "#000000",
     fgColor = "#ffffff",
+    border =  BottomB,
+    borderColor = "black",
     lowerOnStart = False,
     overrideRedirect = False,
     -- We don't want xmobar on all desktops in a dual display setup.
@@ -42,7 +46,7 @@ Config {
         Run Weather "ZGGG" ["-t","<station>:<tempC>°C <skyCondition>","-L","64","-H","77","-n","#CEFFAC","-h","#ff0fda","-l","#96CBFE"] 3600,
         -- Run Weather "ZGGG" [ "--template", "<station>: | <fc=#FFFFFF><tempC></fc>°C  <windMs>" ] 36000,
 
-        Run MultiCpu ["-t","Cpu:<total>%","-L","30","-H","60","-h","#ff0f37","-l","#CEFFAC","-n","#FFFFCC","-w","3"] 10,
+        Run MultiCpu ["-t","CPU:<total>%","-L","30","-H","60","-h","#ff0f37","-l","#CEFFAC","-n","#FFFFCC","-w","3"] 10,
         -- Run MultiCpu ["-t","Cpu: <total0> <total1> <total2> <total3>","-L","30","-H","60","-h","#FFB6B0","-l","#CEFFAC","-n","#FFFFCC","-w","3"] 10,
 
         Run Memory ["-t","Mem: <used>M (<usedratio>%)","-H","8192","-L","4096","-h","#FFB6B0","-l","#CEFFAC","-n","#FFFFCC"] 10,
