@@ -27,6 +27,7 @@ Config {
     -- font = "xft:CaskaydiaCove Nerd Font Mono:style=ExtraLight:pixelsize=15",
     -- font = "xft:CaskaydiaCove Nerd Font Mono:style=Light:pixelsize=15",
     font = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=15",
+    additionalFonts = ["xft:Inconsolata:size=10:style=Bold","xft:FontAwesome:size=7.5"],
     bgColor = "#000000",
     fgColor = "#ffffff",
     border =  BottomB,
@@ -60,6 +61,19 @@ Config {
 
         Run Com "uname" ["-r"] "" 3600,
 
+        Run Kbd [ ("us(dvp)" , "<fc=#cb4b16>DV</fc>")
+                , ("ru(winkeys)", "<fc=#dc322f>RU</fc>")
+                ],
+
+        -- Run Volume "default" "Master" [ "-t", ":<volume>%" -- " <status>" -- mute status
+        --                                       , "--"
+        --                                       , "-O", ""
+        --                                       , "-o", ""
+        --                                       , "-C", "#859900"
+        --                                       , "-c", "#dc322f"
+        --                                       , "--highd", "-5.0"
+        --                                       , "--lowd", "-30.0"
+        --                                       ] 5,
 
         Run Network "wlp59s0" ["-t","直:<rx>kB/s <tx>kB/s","-H","200","-L","10","-h","#FFB6B0","-l","#CEFFAC","-n","#FFFFCC"] 10,
 
@@ -78,11 +92,13 @@ Config {
 
         -- Run Volume "default" "Master" [] 10,
 
-        Run StdinReader
+        -- Run StdinReader,
+
+        Run UnsafeStdinReader
     ],
 
     sepChar = "%",
     alignSep = "}{",
     -- template = "%StdinReader% }{ %multicpu% | %memory% | %swap% | %disku% |  %uname% | <fc=#00ff00>%wlp59s0%</fc> | %battery% | Vol:<fc=#b2b2ff>%volumelevel%</fc> | %ZGGG% | :<fc=#00ff00>%date%</fc> | %trayerpad%"
-    template = "%StdinReader% }{ <fc=#00FFFF>%multicpu% %memory% %swap% %disku%</fc><fc=#00ff00> | %wlp59s0%</fc> | %battery% | %ZGGG% | :<fc=#00ff00>%date%</fc>"
+    template = "%UnsafeStdinReader% }{ <fc=#00FFFF>%multicpu% %memory% %swap% %disku%</fc><fc=#00ff00> | %wlp59s0%</fc> | %battery% | %kbd% |:<fc=#00ff00>%date%</fc>"
 }

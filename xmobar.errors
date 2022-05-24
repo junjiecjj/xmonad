@@ -1,0 +1,6 @@
+
+xmobar.hs:15:36: error:
+    lexical error in string/character literal at character '\61671'
+   |
+15 |         Run Battery [ "-t", "<fn=2></fn> <acstatus>"
+   |                                    ^

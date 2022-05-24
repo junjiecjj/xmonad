@@ -105,8 +105,37 @@ myModMask       = mod4Mask
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
 -- myWorkspaces    = ["Browser", "code", "Term", "File" , "Chat", "Video", "ﱘMusic", "Graphic", "Game"]
-myWorkspaces    = ["Browser", "code", "Term", "File" , "Chat", "Video", "Music", "Graphic", "Game"]
+-- myWorkspaces    = ["Browser", "code", "Term", "File" , "Chat", "Video", "Music", "Graphic", "Game"]
 -- myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
+
+
+------------------------------------------------------------------------
+-- Workspaces
+-- The default number of workspaces (virtual screens) and their names.
+--
+-- myWorkspaces = {- clickable . (map xmobarEscape) $ -} ["<fn=2>\xf120</fn>","<fn=2>\xf0ac</fn>","<fn=2>\xf0ad</fn>","<fn=2>\xf0eb</fn>","<fn=2>\xf085</fn>"] ++ map show [6..12]
+named_ws = [
+           "<fn=2>\xf0ac</fn>"   -- web
+           , "<fn=2>\xf121</fn>" -- code
+           , "<fn=2>\xf120</fn>" -- term
+           , "<fn=2>\xf0ad</fn>" -- sys
+           , "<fn=2>\xf0eb</fn>" -- chat
+           , "<fn=2>\xf085</fn>" -- media
+           , "<fn=2>\xf1fc</fn>" -- art
+           ]
+myWorkspaces = clickable workspaces
+  where
+    workspaces = named_ws ++ unnamed_ws
+    unnamed_ws = let l = length named_ws
+                     s = max 0 $ 12 - l
+                 in take s [[c] | c <- ['Α'..]]
+    clickable ws = [ "<action=wmctrl -s " ++ w ++ ">"
+                     ++ wrap "." "." name ++
+                     "</action>"
+                   | (n, name) <- zip [1..length named_ws] ws
+                   , let w = show $ n - 1
+                   ]
+
 
 -- Location of your xmobar.hs / xmobarrc
 myXmobarrc = "~/.xmonad/xmobar/xmobar-dual.hs"
@@ -128,6 +157,7 @@ myPromptKeymap = M.union defaultXPKeymap $ M.fromList
                  , ((mod1Mask, xK_f), moveWord Next)
                  ]
 
+-- 不知道干嘛的
 myXPConfig = defaultXPConfig
     { font = "xft:CaskaydiaCove Nerd Font Mono:pixelsize=16"
     , bgColor           = "#0c1021"
@@ -147,26 +177,13 @@ myXPConfig = defaultXPConfig
 --
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
-    -- launch a terminal
-    [ ((modm,      xK_Return), spawn $ XMonad.terminal conf)
-    -- [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
-
-    -- 启动 dmenu，用于启动各种命令
-    , ((modm,               xK_d     ), spawn "dmenu_run")
-
-    -- 启动 rofi，用于启动各种命令
-    , ((modm,               xK_r     ), spawn "rofi -show combi")
-
-    -- launch gmrun，用于启动各种命令
-    , ((modm .|. shiftMask, xK_g     ), spawn "gmrun")
-
-    -- close focused window  Win + Shift + Q: 杀死当前窗口
-    , ((modm .|. shiftMask, xK_q     ), kill)
-
+    -- ================================================================================================================
+    --  窗口布局相关快捷键
+    -- ================================================================================================================
      -- Rotate through the available layout algorithms,遍历各种窗口布局
-    , ((modm,               xK_space ), sendMessage NextLayout)
+    [ ((modm,               xK_space ), sendMessage NextLayout)
 
-    --  Reset the layouts on the current workspace to default,将当前标签页变为default
+    --  Reset the layouts on the current workspace to default,将当前标签页窗口布局模式变为default
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
 
     , ((modm .|. shiftMask, xK_v ), windowPromptBring myXPConfig)
@@ -178,6 +195,20 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Resize viewed windows to the correct size
     , ((modm,               xK_n     ), refresh)
 
+    -- -- Increment the number of windows in the master area  插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数。
+    -- , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
+    -- -- Deincrement the number of windows in the master area  插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数。
+    -- , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
+
+    -- Increment the number of windows in the master area 插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数。
+    , ((modm .|. controlMask    , xK_j ), sendMessage (IncMasterN 1))
+    -- Deincrement the number of windows in the master area 插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数。
+    , ((modm .|. controlMask    , xK_k), sendMessage (IncMasterN (-1)))
+
+
+    -- ================================================================================================================
+    -- =======================  同一个标签页的窗口间切换,  ====================
+    -- ================================================================================================================
     -- Move focus to the next window  Win + j: 在同一虚拟桌面中的窗口之间切换,包括浮动与平铺
     , ((modm,               xK_j     ), windows W.focusDown)
 
@@ -191,10 +222,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_q     ), windows W.focusUp  )
 
     -- Move focus to the next window  Win + , 在同一虚拟桌面中的窗口之间切换,包括浮动与平铺
-    , ((modm,               xK_comma     ), windows W.focusDown)
+    , ((modm,               xK_period     ), windows W.focusDown)
 
     -- Move focus to the previous window Win + . 在同一虚拟桌面中的窗口之间切换,包括浮动与平铺
-    , ((modm,               xK_period     ), windows W.focusUp  )
+    , ((modm,               xK_comma     ), windows W.focusUp  )
 
     -- Move focus to the master window, 聚焦到主窗口
     , ((modm .|. controlMask, xK_Return), windows W.focusMaster  )
@@ -208,6 +239,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Swap the focused window with the previous window, 将聚焦的窗口与相邻的窗口交换。
     , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
 
+    -- ================================================================================================================
+    --  窗口大小调整
+    -- ================================================================================================================
     -- -- Shrink the master area  调整主窗格和辅助窗格之间的边框大小。
     -- , ((modm,               xK_h     ), sendMessage Shrink)
     -- -- Expand the master area  调整主窗格和辅助窗格之间的边框大小。
@@ -221,16 +255,76 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm .|. shiftMask,       xK_equal     ), sendMessage Taller)
     -- , ((modm .|. shiftMask,       xK_equal     ), sendMessage Wider)
 
-    -- -- Increment the number of windows in the master area  插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数。
-    -- , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
-    -- -- Deincrement the number of windows in the master area  插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数。
-    -- , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
+    -- =============================================================================================================
+    -- ======  桌面间切换以及窗口在桌面间移动,和i3很类似，但是有点不同在于：
+    --  i3中左右移动窗口到前后的桌面仅限于存在窗口的桌面，但是xmonad左右移动窗口到左右桌面，桌面可以是不存在窗口的桌面，只按序号来
+    -- =============================================================================================================
+    --  聚焦于下一个窗口(标签页，worspace)
+    -- , ((modm,                 xK_Page_Down), nextWS)
+    , ((modm,                   xK_quoteright), nextWS)
+    --  聚焦于上一个窗口(标签页，worspace)
+    -- , ((modm,                 xK_Page_Up),   prevWS)
+    , ((modm,                   xK_semicolon),   prevWS)
+    --  聚焦于下一个窗口(标签页，worspace)
+    , ((modm .|. shiftMask,     xK_period), nextWS)
+    --  聚焦于上一个窗口(标签页，worspace)
+    , ((modm .|. shiftMask,      xK_comma),   prevWS)
 
-    -- Increment the number of windows in the master area 插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数。
-    , ((modm .|. controlMask    , xK_j ), sendMessage (IncMasterN 1))
-    -- Deincrement the number of windows in the master area 插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数。
-    , ((modm .|. controlMask    , xK_k), sendMessage (IncMasterN (-1)))
 
+
+    -- 将当前窗口移动到下一个桌面,但仍然聚焦在当前桌面，桌面按照序号排列，无论有无窗口
+    , ((modm .|. shiftMask,     xK_quoteright ),   shiftToNext)
+    -- 将当前窗口移动到上一个桌面,桌面按照序号排列，无论有无窗口
+    , ((modm .|. shiftMask,     xK_semicolon),     shiftToPrev)
+
+    -- 将当前窗口移动到下一个桌面，聚焦到下一个桌面
+    , ((modm .|. controlMask, xK_quoteright),   shiftToNext >> nextWS)
+    -- 将当前窗口移动到下一个桌面，聚焦到下一个桌面
+    , ((modm .|. controlMask, xK_semicolon),     shiftToPrev >> prevWS)
+
+    -- 切换到上/下一个显示器
+    , ((modm,                   xK_bracketright),       nextScreen)
+    , ((modm,                   xK_bracketleft),        prevScreen)
+    , ((modm .|. controlMask,   xK_period),       nextScreen)
+    , ((modm .|. controlMask,   xK_comma),        prevScreen)
+
+
+    -- 将当前窗口移动到下一个显示器，但仍然聚焦与当前显示器
+    , ((modm .|. shiftMask, xK_bracketright),      shiftNextScreen >> nextScreen)
+    -- 将当前窗口移动到上一个显示器，但仍然聚焦与当前显示器
+    , ((modm .|. shiftMask, xK_bracketleft),        shiftPrevScreen >> prevScreen)
+
+    -- 将当前窗口移动到下一个显示器，聚焦于下一个显示器
+    , ((modm .|. controlMask, xK_bracketright),       shiftNextScreen >> nextScreen)
+    -- 将当前窗口移动到上一个显示器，聚焦于上一个显示器
+    , ((modm .|. controlMask, xK_bracketleft),        shiftPrevScreen >> prevScreen)
+
+    -- Mod4 + b 快速切换到上一个聚焦的标签页(桌面)
+    , ((modm                       ,    xK_b),         toggleWS)
+
+
+  -- Mirror toggle
+    -- , ((modm,                 xK_x)   , sendMessage $ Toggle MIRROR)
+
+
+    -- ==========================================================================================
+    --  APP 快捷键
+    -- ==========================================================================================
+    -- launch a terminal
+      , ((modm,      xK_Return), spawn $ XMonad.terminal conf)
+    -- [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
+
+    -- 启动 dmenu，用于启动各种命令
+    , ((modm,               xK_d     ), spawn "dmenu_run")
+
+    -- 启动 rofi，用于启动各种命令
+    , ((modm,               xK_r     ), spawn "rofi -show combi")
+
+    -- launch gmrun，用于启动各种命令
+    , ((modm .|. shiftMask, xK_g     ), spawn "gmrun")
+
+    -- close focused window  Win + Shift + Q: 杀死当前窗口
+    , ((modm .|. shiftMask, xK_q     ), kill)
 
     -- screenshot screen  截图
     , ((0       , xK_Print), spawn "scrot -cd 3 $(xdg-user-dir PICTURES)/'Scrot_%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f; viewnior $f'")
@@ -247,16 +341,16 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm, xK_F10), toggleMute    >> return ())
 
     -- ²éÑ¯×Öµä
-    -- , ((modm              , xK_s),      getSelection  >>= sdcv)
-    -- , ((modm .|. shiftMask, xK_s),      getPromptInput ?+ sdcv)
-    --, ((modm .|. shiftMask, xK_s),      getDmenuInput >>= sdcv)
+    , ((modm              , xK_s),      getSelection  >>= sdcv)
+    , ((modm .|. shiftMask, xK_s),      getPromptInput ?+ sdcv)
+    -- , ((modm .|. shiftMask, xK_s),      getDmenuInput >>= sdcv)
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
     -- See also the statusBar function from Hooks.DynamicLog.
-    --
-    -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
-
-    -- Mute volume.
+    , ((modm              , xK_u     ), sendMessage ToggleStruts)
+    -- ==========================================================================================
+    -- =================  音量控制
+    -- ==========================================================================================
     , ((0, xF86XK_AudioMute), spawn "amixer -D pulse set Master 1+ toggle")
 
     -- Decrease volume.
@@ -289,6 +383,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. controlMask, xK_r     ), spawn "xmonad --recompile; xmonad --restart")
     ]
     ++
+
+    -- -- mod-[F1..F9], Switch to workspace N
+    -- -- mod-shift-[F1..F9], Move client to workspace N
+    -- [((m .|. modMask, k), windows $ f i)
+    --     | (i, k) <- zip (XMonad.workspaces conf) [xK_F1 .. xK_F9]
+    --     , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
 
     --
     -- mod-[1..9], Switch to workspace N
@@ -360,6 +460,15 @@ myLayout = avoidStruts (
     spiral (6/7)) -- |||
     -- noBorders (fullscreenFull Full)
 
+-- Colors for text and backgrounds of each tab when in "Tabbed" layout.
+tabConfig = defaultTheme {
+    activeBorderColor = "#7C7C7C",
+    activeTextColor = "#00ff00",
+    activeColor = "#7C7C7C",
+    inactiveBorderColor = "#000000",
+    inactiveTextColor = "#EEEEEE",
+    inactiveColor = "#000000"
+}
 
 ------------------------------------------------------------------------
 -- Window rules:
@@ -426,24 +535,36 @@ myLogHook = dynamicLog
 myStartupHook = do
                   -- 启动 trayer 以显示 systary
                   spawn "trayer --edge top --align right --widthtype percent --width 10 --SetDockType true --SetPartialStrut true --transparent true --alpha 0 --tint 0x000000 --expand true --heighttype pixel --height 25"
-                  spawn "fcitx  &"
-                  spawn "fcitx5  &"
-                  spawn "redshift-gtk  &"
-                  spawn "nm-applet &"
-                  spawn "blueman-applet &"
-                  spawn "pa-applet &"
-                  spawn "picom --experimental-backends -b&"
-                  spawn "xscreensaver  -no-splash &"
-                  spawn "nohup  flameshot >/dev/null 2>&1 &"
-                  spawn "dunst &"
-                  spawn "copyq &"
-                  spawn "nohup pasystray  >/dev/null 2>&1 &"
-                  spawn "nohup kmix   >/dev/null 2>&1 &"
-                  spawn "nohup /foo/bar/bin/pa-applet   >/dev/null 2>&1 &"
-                  spawn "nohup mictray   >/dev/null 2>&1 &"
+                  spawn "ps cax | grep fcitx ; if ! [ $? -eq 0 ]; then fcitx ; fi"
+                  spawn "ps cax | grep fcitx5 ; if ! [ $? -eq 0 ]; then fcitx5 ; fi"
+                  -- spawn "redshift-gtk  &"
+                  spawn "ps cax | grep redshift-gtk ; if ! [ $? -eq 0 ]; then redshift-gtk ; fi"
+                  spawn "ps cax | grep  nm-applet; if ! [ $? -eq 0 ]; then  nm-applet; fi"
+                  spawn "ps cax | grep  blueman-applet; if ! [ $? -eq 0 ]; then  blueman-applet; fi"
+                  spawn "ps cax | grep  picom; if ! [ $? -eq 0 ]; then  picom --experimental-backends -b; fi"
+                  spawn "ps cax | grep  xscreensaver; if ! [ $? -eq 0 ]; then  xscreensaver  -no-splash &; fi"
+                  spawn "ps cax | grep  flameshot; if ! [ $? -eq 0 ]; then  nohup  flameshot >/dev/null 2>&1 &; fi"
+                  spawn "ps cax | grep  dunst; if ! [ $? -eq 0 ]; then  dunst; fi"
+                  spawn "ps cax | grep  copyq; if ! [ $? -eq 0 ]; then  copyq ; fi"
+                  spawn "ps cax | grep  pasystray; if ! [ $? -eq 0 ]; then  nohup pasystray  >/dev/null 2>&1 &; fi"
+                  spawn "ps cax | grep  kmix; if ! [ $? -eq 0 ]; then  nohup kmix   >/dev/null 2>&1 &; fi"
+                  spawn "ps cax | grep  pa-applet; if ! [ $? -eq 0 ]; then  nohup /foo/bar/bin/pa-applet   >/dev/null 2>&1 &; fi"
+                  spawn "ps cax | grep  mictray; if ! [ $? -eq 0 ]; then  ; fi"
+                  spawn "ps cax | grep  ; if ! [ $? -eq 0 ]; then  nohup mictray   >/dev/null 2>&1 &; fi"
+                  -- spawn "nm-applet &"
+                  -- spawn "blueman-applet &"
+                  -- spawn "picom --experimental-backends -b "
+                  -- spawn "xscreensaver  -no-splash &"
+                  -- spawn "nohup  flameshot >/dev/null 2>&1 &"
+                  -- spawn "dunst &"
+                  -- spawn "copyq &"
+                  -- spawn "nohup pasystray  >/dev/null 2>&1 &"
+                  -- spawn "nohup kmix   >/dev/null 2>&1 &"
+                  -- spawn "nohup /foo/bar/bin/pa-applet   >/dev/null 2>&1 &"
+                  -- spawn "nohup mictray   >/dev/null 2>&1 &"
                   setDefaultCursor xC_left_ptr    -- 设置鼠标样式
                   spawn "feh --recursive --randomize --bg-fill $(xdg-user-dir PICTURES)'/Wallpapers/'"
-                  spawn "volti"
+                  -- spawn "volti"
 
 
 -- Border colors for unfocused and focused windows, respectively.
@@ -453,15 +574,6 @@ myFocusedBorderColor = "#00ff00"
 
 
 
--- Colors for text and backgrounds of each tab when in "Tabbed" layout.
-tabConfig = defaultTheme {
-    activeBorderColor = "#7C7C7C",
-    activeTextColor = "#00ff00",
-    activeColor = "#7C7C7C",
-    inactiveBorderColor = "#000000",
-    inactiveTextColor = "#EEEEEE",
-    inactiveColor = "#000000"
-}
 
 -- Color of current window title in xmobar.
 xmobarTitleColor = "#FFB6B0"
