@@ -26,7 +26,7 @@ Config {
     -- font = "xft:WenQuanYi Micro Hei:style=Regular:pixelsize=15",
     -- font = "xft:CaskaydiaCove Nerd Font Mono:style=ExtraLight:pixelsize=15",
     -- font = "xft:CaskaydiaCove Nerd Font Mono:style=Light:pixelsize=15",
-    font = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=15",
+    font = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=14",
     additionalFonts = ["xft:Inconsolata:size=10:style=Bold","xft:FontAwesome:size=7.5"],
     bgColor = "#000000",
     fgColor = "#ffffff",
@@ -47,17 +47,39 @@ Config {
         Run Weather "ZGGG" ["-t","<station>:<tempC>°C <skyCondition>","-L","64","-H","77","-n","#FFD700","-h","#ff0fda","-l","#96CBFE"] 3600,
         -- Run Weather "ZGGG" [ "--template", "<station>: | <fc=#FFFFFF><tempC></fc>°C  <windMs>" ] 36000,
 
-        Run MultiCpu ["-t","CPU:<total>%","-L","20","-H","60","-h","#ff0f37","-l","#00F5FF","-n","#FFD700","-w","3"] 10,
+        -- Run MultiCpu ["-t","<fn=2></fn>:<total>%","-L","20","-H","60","-h","#ff0f37","-l","#00F5FF","-n","#FFD700","-w","3"] 10,
         -- Run MultiCpu ["-t","Cpu: <total0> <total1> <total2> <total3>","-L","30","-H","60","-h","#FFB6B0","-l","#CEFFAC","-n","#FFD700","-w","3"] 10,
 
-        Run Memory ["-t","Mem: <used>M (<usedratio>%)","-H","8192","-L","4096","-h","#ff0f37","-l","#00F5FF","-n","#FFD700"] 10,
-        Run Swap ["-t","Swap: <usedratio>%","-H","1024","-L","512","-h","#FFB6B0","-l","#CEFFAC","-n","#FFD700"] 10,
+        Run MultiCpu [ "-t", "<fn=2></fn>:<total>"
+                     , "-L", "30"
+                     , "-H", "60"
+                     , "-h", "#dc322f"
+                     , "-l", "#859900"
+                     , "-n", "#839496"
+                     , "-w", "3"] 10,
 
+        -- Run Memory ["-t","<fn=2></fn>: <used>M (<usedratio>%)","-H","8192","-L","4096","-h","#ff0f37","-l","#00F5FF","-n","#FFD700"] 10,
+        Run Memory [ "-t", "<fn=2></fn>:<usedratio>%"
+                   , "-H", "8192"
+                   , "-L", "4096"
+                   , "-h", "#dc322f"
+                   , "-l", "#859900"
+                   ,"-n", "#839496"] 10,
+
+        -- Run Swap ["-t","<fn=2></fn>: <usedratio>%","-H","1024","-L","512","-h","#FFB6B0","-l","#CEFFAC","-n","#FFD700"] 10,
+        Run Swap [ "-t", "<fn=2></fn>:<usedratio>%"
+                 , "-H", "1024"
+                 , "-L", "512"
+                 , "-h", "#dc322f"
+                 , "-l", "#859900"
+                 , "-n", "#839496"] 10,
 
         Run Com "/home/jack/.xmonad/xmobar/trayer-padding-icon.sh" [] "trayerpad" 20,
 
-        Run DiskU [("/", "/:<free>")] [] 60,
+        Run DiskU [("/", "<fn=2></fn>:<free>"),("/home", "<fn=2></fn>:<free>")] [] 60,
         -- Run DiskH [("/home", "/:<free>")] [] 60,
+
+        Run  DiskIO [("/", "<fn=2></fn>:<read> <write>"),  ("/home", "<fn=2></fn>:<read> <write>")] [] 10,
 
         Run Com "uname" ["-r"] "" 3600,
 
@@ -65,27 +87,82 @@ Config {
                 , ("ru(winkeys)", "<fc=#dc322f>RU</fc>")
                 ],
 
-        -- Run Volume "default" "Master" [ "-t", ":<volume>%" -- " <status>" -- mute status
-        --                                       , "--"
-        --                                       , "-O", ""
-        --                                       , "-o", ""
-        --                                       , "-C", "#859900"
-        --                                       , "-c", "#dc322f"
-        --                                       , "--highd", "-5.0"
-        --                                       , "--lowd", "-30.0"
-        --                                       ] 5,
+        -- Run Volume "default" "Master" [ "--template", "<fn=2></fn> <volume>%" -- " <status>" -- mute status
+        --                               , "--"
+        --                               , "-O", "<fn=2></fn>"
+        --                               , "-o", "<fn=2></fn>"
+        --                               , "-C", "#859900"
+        --                               , "-c", "#dc322f"
+        --                               , "--highd", "-5.0"
+        --                               , "--lowd", "-30.0"
+        --                               ] 5,
 
-        Run Network "wlp59s0" ["-t","直:<rx>kB/s <tx>kB/s","-H","200","-L","10","-h","#FFB6B0","-l","#CEFFAC","-n","#FFFFCC"] 10,
+        -- Run Network "wlp59s0" ["-t","直:<rx>kB/s <tx>kB/s","-H","200","-L","10","-h","#FFB6B0","-l","#CEFFAC","-n","#FFFFCC"] 10,
 
-        Run Battery        [ "-t", "BAT: <acstatus>", "--Low", "20", "--High","80", "--low","darkred", "--normal","darkorange", "--high","#81a1c1"
-                                     , "--" -- battery specific options
-                                       -- discharging status
-                                       , "-o"	, "<left>% (<timeleft>)"
-                                       -- AC "on" status
-                                       , "-O"	, "Charging <left>%"
-                                       -- charged status
-                                       , "-i"	, "Charged"
-                             ] 50,
+        Run Wireless "wlp59s0" [ "-a", "l"
+                              , "-w", "4"
+                              , "-t", "<essid><quality>%"
+                              , "-L", "50"
+                              , "-H", "75"
+                              , "-l", "#dc322f"
+                              , "-n", "#cb4b16"
+                              , "-h", "#859900"
+                              ] 1000,
+
+         -- Run DynNetwork ["-t","<fc=#4db5bd><fn=1></fn></fc> <rx>, <fc=#c678dd><fn=1></fn></fc> <tx>"
+         --                             ,"-H","200"
+         --                             ,"-L","10"
+         --                             ,"-h","#bbc2cf"
+         --                             ,"-l","#bbc2cf"
+         --                             ,"-n","#bbc2cf"] 50,
+
+        Run DynNetwork   [ "--template", "<fn=2></fn> <rx>kB/s <tx>kB/s"
+                       , "--Low", "1000"
+                       , "--High", "5000"
+                       , "--low", "#859900"
+                       , "--normal", "#cb4b16"
+                       , "--high", "#dc322f"
+                       ] 10,
+
+        -- Run Battery   [ "-t", "<fn=2></fn>: <acstatus>", "--Low", "20", "--High","80", "--low","darkred", "--normal","darkorange", "--high","#81a1c1"
+        --                              , "--" -- battery specific options
+        --                                -- discharging status
+        --                                , "-o", "<left>% (<timeleft>)"
+        --                                -- AC "on" status
+        --                                , "-O", "<left>%<fc=#cb4b16><fn=2></fn></fc>"
+        --                                -- charged status
+        --                                , "-i", "<fc=#859900><fn=2></fn></fc>"
+        --                      ] 50,
+
+        Run Battery [ "-t", "<fn=2></fn> <acstatus>"
+                    , "-L", "25"
+                    , "-H", "75"
+                    , "-h", "#859900"
+                    , "-n", "#b58900"
+                    , "-l", "#dc322f"
+                    , "--"
+                    , "-o", ":<left>% (<timeleft>)"
+                    , "-O", "<left>% <fc=#cb4b16><fn=2></fn></fc>"
+                    , "-i", "<fc=#859900><fn=2></fn></fc>"] 30,
+
+         -- Run Battery
+         --               [ "--template" , "<acstatus>"
+         --                     , "--Low"      , "10"        -- units: %
+         --                     , "--High"     , "80"        -- units: %
+         --                     , "--low"      , "#BF616A"
+         --                     , "--normal"   , "#EBCB8B"
+         --                     , "--high"     , "#A3BE8C"
+         --                     , "--" 
+         --                               , "--lows"     , ": <left>% <timeleft>"
+         --                               , "--mediums"  , ": <left>% <timeleft>"
+         --                               , "--highs"    , ": <left>% <timeleft>"
+         --                               -- AC "on" status
+         --                               , "-O"  , ": <left>% <timeleft>"
+         --                               -- charged status
+         --                               , "-i"  , ""
+         --                               , "-a", "notify-send -u critical 'Battery running out!!'"
+         --                               , "-A", "20"
+         --                     ] 50,
 
         -- Run Date "%a %b %_d %l:%M" "date" 10,
         Run Date "%Y-%m-%d %a %H:%M:%S" "date" 10,
@@ -100,5 +177,5 @@ Config {
     sepChar = "%",
     alignSep = "}{",
     -- template = "%StdinReader% }{ %multicpu% | %memory% | %swap% | %disku% |  %uname% | <fc=#00ff00>%wlp59s0%</fc> | %battery% | Vol:<fc=#b2b2ff>%volumelevel%</fc> | %ZGGG% | :<fc=#00ff00>%date%</fc> | %trayerpad%"
-    template = "%UnsafeStdinReader% }{ <fc=#00FFFF>%multicpu% %memory% %swap% %disku%</fc><fc=#00ff00> | %wlp59s0%</fc> | %battery% | %kbd% |:<fc=#00ff00>%date%</fc>"
+    template = "%UnsafeStdinReader% }{ <fc=#00FFFF>%multicpu% %memory% %swap% %disku%  %diskio%</fc><fc=#00ff00> | %dynnetwork% %wlp59s0% </fc> | <fc=#FFD700>%battery% </fc>| %kbd% |<fc=#00ff00>:%date%</fc>"
 }

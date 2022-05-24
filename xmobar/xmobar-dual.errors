@@ -1,6 +1,6 @@
 
-xmobar-dual.hs:68:48: error:
-    lexical error in string/character literal at character '\61480'
+xmobar-dual.hs:53:37: error:
+    lexical error in string/character literal at character '\61614'
    |
-68 |         Run Volume "default" "Master" [ "-t", ":<volume>%" -- " <status>" -- mute status
-   |                                                ^
+53 |         Run MultiCpu [ "-t", "<fn=2></fn>:<total>"
+   |                                     ^
