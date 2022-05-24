@@ -2,7 +2,7 @@
 
 import System.IO                   -- hPutStrLn scope
 import XMonad
-import XMonad.Core
+-- import XMonad.Core
 
 
 import Data.Monoid
@@ -12,16 +12,21 @@ import System.Exit
 import XMonad.ManageHook
 
 import XMonad.Prompt
-import XMonad.Prompt.Shell
-import XMonad.Prompt.Man
+-- import XMonad.Prompt.Shell
+-- import XMonad.Prompt.Man
 import XMonad.Prompt.Input
 import System.Posix.Process (createSession, executeFile, forkProcess)
 
-import XMonad.Layout
-import XMonad.Layout.ResizableTile
-import XMonad.Layout.Named         -- custom layout names
+-- import XMonad.Layout
+-- import XMonad.Layout.ResizableTile
+-- import XMonad.Layout.Named         -- custom layout names
 import XMonad.Layout.NoBorders     -- smart borders on solo clients
 import XMonad.Layout.PerWorkspace
+import XMonad.Layout.Fullscreen
+import XMonad.Layout.Spiral
+import XMonad.Layout.Tabbed
+import XMonad.Layout.ThreeColumns
+
 
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeInactive
@@ -29,19 +34,25 @@ import XMonad.Hooks.DynamicLog     -- statusbar
 import XMonad.Hooks.EwmhDesktops   -- fullscreenEventHook fixes chrome fullscreen
 import XMonad.Hooks.ManageDocks    -- dock/tray mgmt
 import XMonad.Hooks.UrgencyHook    -- window alert bells
+import XMonad.Hooks.SetWMName
 
 import Graphics.X11.Xlib
 
 import XMonad.Util.Run
-import XMonad.Util.EZConfig        -- append key/mouse bindings
-import XMonad.Util.Run(spawnPipe)  -- spawnPipe and hPutStrLn
+-- import XMonad.Util.EZConfig        -- append key/mouse bindings
+import XMonad.Util.Run(spawnPipe)    -- spawnPipe and hPutStrLn
 import XMonad.Util.Cursor
 import XMonad.Util.XSelection
 import XMonad.Util.XUtils
+import XMonad.Util.EZConfig(additionalKeys)
+import Graphics.X11.ExtraTypes.XF86
+
 
 import XMonad.Config.Desktop
 
 
+
+import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.CycleWindows -- classic alt-tab
 import XMonad.Actions.CycleWS      -- cycle thru WS', toggle last WS
 import XMonad.Actions.DwmPromote   -- swap master like dwm
@@ -51,7 +62,13 @@ import XMonad.Actions.DwmPromote   -- swap master like dwm
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W   -- manageHook rules
 
-
+import XMonad.Prompt
+import XMonad.Prompt.Input
+import XMonad.Prompt.Man
+import XMonad.Prompt.RunOrRaise
+import XMonad.Prompt.Shell
+import XMonad.Prompt.Window
+import XMonad.Prompt.Workspace
 
 
 
@@ -69,7 +86,7 @@ myFocusFollowsMouse = True
 
 -- Width of the window border in pixels.
 --
-myBorderWidth   = 1
+myBorderWidth   = 2
 
 -- modMask lets you specify which modkey you want to use. The default
 -- is mod1Mask ("left alt").  You may also consider using mod3Mask
@@ -91,36 +108,39 @@ myModMask       = mod4Mask
 myWorkspaces    = ["Browser", "code", "Term", "File" , "Chat", "Video", "Music", "Graphic", "Game"]
 -- myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 
+-- Location of your xmobar.hs / xmobarrc
+myXmobarrc = "~/.xmonad/xmobar/xmobar-dual.hs"
 
 
--- Border colors for unfocused and focused windows, respectively.
---
-myNormalBorderColor  = "#dddddd"
-myFocusedBorderColor = "#ff0000"
+myPromptKeymap = M.union defaultXPKeymap $ M.fromList
+                 [
+                   ((controlMask, xK_g), quit)
+                 , ((controlMask, xK_m), setSuccess True >> setDone True)
+                 , ((controlMask, xK_j), setSuccess True >> setDone True)
+                 , ((controlMask, xK_h), deleteString Prev)
+                 , ((controlMask, xK_f), moveCursor Next)
+                 , ((controlMask, xK_b), moveCursor Prev)
+                 , ((controlMask, xK_p), moveHistory W.focusDown')
+                 , ((controlMask, xK_n), moveHistory W.focusUp')
+                 , ((mod1Mask, xK_p), moveHistory W.focusDown')
+                 , ((mod1Mask, xK_n), moveHistory W.focusUp')
+                 , ((mod1Mask, xK_b), moveWord Prev)
+                 , ((mod1Mask, xK_f), moveWord Next)
+                 ]
 
+myXPConfig = defaultXPConfig
+    { font = "xft:CaskaydiaCove Nerd Font Mono:pixelsize=16"
+    , bgColor           = "#0c1021"
+    , fgColor           = "#f8f8f8"
+    , fgHLight          = "#f8f8f8"
+    , bgHLight          = "steelblue3"
+    , borderColor       = "DarkOrange"
+    , promptBorderWidth = 1
+    , position          = Top
+    , historyFilter     = deleteConsecutive
+    , promptKeymap = myPromptKeymap
+    }
 
--- Colors
-myBgBgColor = "black"
-myFgColor = "gray80"
-myBgColor = "gray20"
-
-myHighlightedFgColor = "white"
-myHighlightedBgColor = "gray40"
-
-myActiveBorderColor = "gray20"
-myInactiveBorderColor = "gray20"
-
-myCurrentWsFgColor = "white"
-myCurrentWsBgColor = "gray40"
-myVisibleWsFgColor = "gray80"
-myVisibleWsBgColor = "gray20"
-myHiddenWsFgColor = "gray80"
-myHiddenEmptyWsFgColor = "gray50"
-myUrgentWsBgColor = "brown"
-myTitleFgColor = "white"
-
-myUrgencyHintFgColor = "white"
-myUrgencyHintBgColor = "brown"
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -137,7 +157,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- 启动 rofi，用于启动各种命令
     , ((modm,               xK_r     ), spawn "rofi -show combi")
 
-
     -- launch gmrun，用于启动各种命令
     , ((modm .|. shiftMask, xK_g     ), spawn "gmrun")
 
@@ -147,9 +166,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
      -- Rotate through the available layout algorithms,遍历各种窗口布局
     , ((modm,               xK_space ), sendMessage NextLayout)
 
-    --  Reset the layouts on the current workspace to default,将当前标签页变为平铺
+    --  Reset the layouts on the current workspace to default,将当前标签页变为default
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
 
+    , ((modm .|. shiftMask, xK_v ), windowPromptBring myXPConfig)
+    , ((modm .|. shiftMask, xK_n ), addWorkspacePrompt myXPConfig)
 
     -- Push window back into tiling,将浮动窗口重新变为平铺
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)
@@ -175,7 +196,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Move focus to the previous window Win + . 在同一虚拟桌面中的窗口之间切换,包括浮动与平铺
     , ((modm,               xK_period     ), windows W.focusUp  )
 
-
     -- Move focus to the master window, 聚焦到主窗口
     , ((modm .|. controlMask, xK_Return), windows W.focusMaster  )
 
@@ -194,11 +214,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm,               xK_l     ), sendMessage Expand)
 
     -- Shrink the master area  调整主窗格和辅助窗格之间的边框大小。
-    , ((modm,               xK_minus     ), sendMessage Shrink)
+    , ((modm,                     xK_minus     ), sendMessage Shrink)
 
     -- Expand the master area  调整主窗格和辅助窗格之间的边框大小。
-    , ((modm,               xK_equal     ), sendMessage Expand)
-
+    , ((modm,                     xK_equal     ), sendMessage Expand)
+    -- , ((modm .|. shiftMask,       xK_equal     ), sendMessage Taller)
+    -- , ((modm .|. shiftMask,       xK_equal     ), sendMessage Wider)
 
     -- -- Increment the number of windows in the master area  插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数。
     -- , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
@@ -206,16 +227,19 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
 
     -- Increment the number of windows in the master area 插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数。
-    , ((modm .|. shiftMask    , xK_h ), sendMessage (IncMasterN 1))
+    , ((modm .|. controlMask    , xK_j ), sendMessage (IncMasterN 1))
     -- Deincrement the number of windows in the master area 插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数。
-    , ((modm .|. shiftMask    , xK_l), sendMessage (IncMasterN (-1)))
+    , ((modm .|. controlMask    , xK_k), sendMessage (IncMasterN (-1)))
 
 
     -- screenshot screen  截图
-    , ((modm              , xK_Print), spawn "/usr/bin/screenshot scr")
+    , ((0       , xK_Print), spawn "scrot -cd 3 $(xdg-user-dir PICTURES)/'Scrot_%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f; viewnior $f'")
+    , ((modm    , xK_Print), spawn "scrot -cd 3 $(xdg-user-dir PICTURES)/'Scrot_%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'viewnior $f'")
 
     -- screenshot window or area  截图
-    , ((modm .|. shiftMask, xK_Print), spawn "/usr/bin/screenshot win")
+    , ((modm .|. shiftMask, xK_Print),    spawn "deepin-screenshot")
+    , ((shiftMask,          xK_Print),    spawn "flameshot gui -p  $(xdg-user-dir PICTURES) -d 2000")
+    , ((controlMask,        xK_Print),    spawn "flameshot full -c -p  $(xdg-user-dir PICTURES)  -d 2000")
 
     -- -- ÐÞ¸ÄÒôÁ¿
     -- , ((modm, xK_F8 ), lowerVolume 3 >> return ())
@@ -232,12 +256,31 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     --
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
+    -- Mute volume.
+    , ((0, xF86XK_AudioMute), spawn "amixer -D pulse set Master 1+ toggle")
+
+    -- Decrease volume.
+    , ((0, xF86XK_AudioLowerVolume),  spawn "amixer -q set Master 5%-")
+
+    -- Increase volume.
+    , ((0, xF86XK_AudioRaiseVolume),  spawn "amixer -q set Master 5%+")
+
+    -- Mute volume.
+    , ((modm .|. controlMask, xK_BackSpace),  spawn "amixer -D pulse set Master 1+ toggle")
+
+    -- Decrease volume.
+    , ((modm .|. controlMask, xK_minus),   spawn "amixer -q set Master 5%-")
+
+    -- Increase volume.
+    , ((modm .|. controlMask, xK_equal),  spawn "amixer -q set Master 5%+")
+
     -- 锁屏
     , ((modm .|. controlMask, xK_x     ), spawn "xscreensaver-command -lock")
     , ((modm .|. controlMask, xK_l     ), spawn "slock")
     , ((modm .|. controlMask, xK_b     ), spawn "betterlockscreen -l")
 
-
+    -- change wallpapaer
+    ,((modm .|. shiftMask,  xK_b     ),   spawn  "feh --recursive --randomize --bg-fill $(xdg-user-dir PICTURES)'/Wallpapers/'" )
 
     -- Quit xmonad  Win + Control + e:  离开 xmonad
     , ((modm .|. controlMask, xK_e     ), io (exitWith ExitSuccess))
@@ -296,16 +339,27 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = smartBorders $ onWorkspace "X" (Full ||| tiled ||| Mirror tiled) (tiled ||| Mirror tiled ||| Full)
-  where
-     -- default tiling algorithm partitions the screen into two panes
-     tiled   = Tall nmaster delta ratio
-     -- The default number of windows in the master pane
-     nmaster = 1
-     -- Default proportion of screen occupied by master pane
-     ratio   = 1/2
-     -- Percent of screen to increment by when resizing panes
-     delta   = 3/100
+-- myLayout = smartBorders $ onWorkspace "X" (Full ||| tiled ||| Mirror tiled) (tiled ||| Mirror tiled ||| Full)
+--   where
+--      -- default tiling algorithm partitions the screen into two panes
+--      tiled   = Tall nmaster delta ratio
+--      -- The default number of windows in the master pane
+--      nmaster = 1
+--      -- Default proportion of screen occupied by master pane
+--      ratio   = 1/2
+--      -- Percent of screen to increment by when resizing panes
+--      delta   = 3/100
+
+
+myLayout = avoidStruts (
+    Tall 1 (3/100) (1/2) |||
+    ThreeColMid 1 (3/100) (1/2) |||
+    Mirror (Tall 1 (3/100) (1/2)) |||
+    tabbed shrinkText tabConfig |||
+    Full |||
+    spiral (6/7)) -- |||
+    -- noBorders (fullscreenFull Full)
+
 
 ------------------------------------------------------------------------
 -- Window rules:
@@ -322,16 +376,21 @@ myLayout = smartBorders $ onWorkspace "X" (Full ||| tiled ||| Mirror tiled) (til
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 --
-myManageHook = composeAll 
+myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
-    , isFullscreen                  --> doFullFloat
     , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore 
+    -- , isFullscreen                  --> doFullFloat
+    , resource  =? "desktop_window" --> doIgnore
+    , resource  =? "kdesktop"       --> doIgnore
     , className =? "Firefox"        --> doShift "W"
     , className =? "Pidgin"         --> doShift "I"
     , className =? "VirtualBox"     --> doShift "X"
+    , isFullscreen --> (doF W.focusDown <+> doFullFloat)
+    , className =? "Google-chrome"  --> doShift "W"
+    , className =? "Steam"          --> doFloat
     ]
+
 
 ------------------------------------------------------------------------
 -- Event handling
@@ -342,7 +401,7 @@ myManageHook = composeAll
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
-myEventHook = mempty
+-- myEventHook = mempty
 
 ------------------------------------------------------------------------
 -- Status bars and logging
@@ -352,6 +411,8 @@ myEventHook = mempty
 --
 --myLogHook = return ()
 myLogHook = dynamicLog
+
+
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -363,6 +424,7 @@ myLogHook = dynamicLog
 -- By default, do nothing.
 --myStartupHook = return ()
 myStartupHook = do
+                  -- 启动 trayer 以显示 systary
                   spawn "trayer --edge top --align right --widthtype percent --width 10 --SetDockType true --SetPartialStrut true --transparent true --alpha 0 --tint 0x000000 --expand true --heighttype pixel --height 25"
                   spawn "fcitx  &"
                   spawn "fcitx5  &"
@@ -379,16 +441,89 @@ myStartupHook = do
                   spawn "nohup kmix   >/dev/null 2>&1 &"
                   spawn "nohup /foo/bar/bin/pa-applet   >/dev/null 2>&1 &"
                   spawn "nohup mictray   >/dev/null 2>&1 &"
-                  setDefaultCursor xC_left_ptr
+                  setDefaultCursor xC_left_ptr    -- 设置鼠标样式
                   spawn "feh --recursive --randomize --bg-fill $(xdg-user-dir PICTURES)'/Wallpapers/'"
                   spawn "volti"
+
+
+-- Border colors for unfocused and focused windows, respectively.
+--
+myNormalBorderColor  = "#dddddd"
+myFocusedBorderColor = "#00ff00"
+
+
+
+-- Colors for text and backgrounds of each tab when in "Tabbed" layout.
+tabConfig = defaultTheme {
+    activeBorderColor = "#7C7C7C",
+    activeTextColor = "#00ff00",
+    activeColor = "#7C7C7C",
+    inactiveBorderColor = "#000000",
+    inactiveTextColor = "#EEEEEE",
+    inactiveColor = "#000000"
+}
+
+-- Color of current window title in xmobar.
+xmobarTitleColor = "#FFB6B0"
+
+-- Color of current workspace in xmobar.
+xmobarCurrentWorkspaceColor = "#CEFFAC"
+
+-- Colors
+myBgBgColor = "black"
+myFgColor = "gray80"
+myBgColor = "gray20"
+
+myHighlightedFgColor = "white"
+myHighlightedBgColor = "gray40"
+
+
+myCurrentWsFgColor = "white"
+myCurrentWsBgColor = "gray40"
+myVisibleWsFgColor = "gray80"
+myVisibleWsBgColor = "gray20"
+myHiddenWsFgColor = "gray80"
+myHiddenEmptyWsFgColor = "gray50"
+myUrgentWsBgColor = "brown"
+myTitleFgColor = "white"
+
+myUrgencyHintFgColor = "white"
+myUrgencyHintBgColor = "brown"
+
+
+-- Fonts
+myFont = "xft:monospace:size=8"
+mySmallFont = "xft:monospace:size=5"
+
+
+
+
+-- Bars
+myDzenBarGeneralOptions = "-h 15 -fn '" ++ myFont ++ "' -fg '" ++ myFgColor ++
+                          "' -bg '" ++ myBgColor ++ "'"
+
+myStatusBar = "dzen2 -w 956 -ta l " ++ myDzenBarGeneralOptions
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad =<< xmobar defaults
+-- main = xmonad =<< xmobar defaults
+
+
+main = do
+    -- myStatusBarPipe <- spawnPipe myStatusBar
+    xmproc <- spawnPipe ("xmobar " ++ myXmobarrc)
+    xmonad  $ defaults {
+         logHook = dynamicLogWithPP $ xmobarPP {
+             ppOutput = hPutStrLn xmproc
+             , ppTitle = xmobarColor xmobarTitleColor "" . shorten 100
+             , ppCurrent = xmobarColor xmobarCurrentWorkspaceColor ""
+             , ppSep = "  "
+       }
+  }
+
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
@@ -411,10 +546,12 @@ defaults = defaultConfig {
         mouseBindings      = myMouseBindings,
 
       -- hooks, layouts
-        layoutHook         = myLayout,
-        manageHook         = myManageHook,
-        handleEventHook    = myEventHook,
-        logHook            = myLogHook,
+        -- layoutHook         = myLayout,
+        layoutHook         = smartBorders $ myLayout,
+        -- manageHook         = myManageHook,
+        manageHook = manageDocks <+> myManageHook,
+        handleEventHook    = docksEventHook,
+        -- logHook            = myLogHook,
         startupHook        = myStartupHook
     }
 
