@@ -43,14 +43,14 @@ Config {
         -- Run MPD ["-t","<composer><file> <remaining> /<plength> <statei> [<flags>]", "--", "-P", ">>", "-Z", "|", "-S", "><"] 10,
 
         -- Run Weather "ZGGG" ["-t","<station>:<tempC>°C <skyCondition> <windMs>m/s","-L","64","-H","77","-n","#CEFFAC","-h","#FFB6B0","-l","#96CBFE"] 36000,
-        Run Weather "ZGGG" ["-t","<station>:<tempC>°C <skyCondition>","-L","64","-H","77","-n","#CEFFAC","-h","#ff0fda","-l","#96CBFE"] 3600,
+        Run Weather "ZGGG" ["-t","<station>:<tempC>°C <skyCondition>","-L","64","-H","77","-n","#FFD700","-h","#ff0fda","-l","#96CBFE"] 3600,
         -- Run Weather "ZGGG" [ "--template", "<station>: | <fc=#FFFFFF><tempC></fc>°C  <windMs>" ] 36000,
 
-        Run MultiCpu ["-t","CPU:<total>%","-L","30","-H","60","-h","#ff0f37","-l","#CEFFAC","-n","#FFFFCC","-w","3"] 10,
-        -- Run MultiCpu ["-t","Cpu: <total0> <total1> <total2> <total3>","-L","30","-H","60","-h","#FFB6B0","-l","#CEFFAC","-n","#FFFFCC","-w","3"] 10,
+        Run MultiCpu ["-t","CPU:<total>%","-L","20","-H","60","-h","#ff0f37","-l","#00F5FF","-n","#FFD700","-w","3"] 10,
+        -- Run MultiCpu ["-t","Cpu: <total0> <total1> <total2> <total3>","-L","30","-H","60","-h","#FFB6B0","-l","#CEFFAC","-n","#FFD700","-w","3"] 10,
 
-        Run Memory ["-t","Mem: <used>M (<usedratio>%)","-H","8192","-L","4096","-h","#FFB6B0","-l","#CEFFAC","-n","#FFFFCC"] 10,
-        Run Swap ["-t","Swap: <usedratio>%","-H","1024","-L","512","-h","#FFB6B0","-l","#CEFFAC","-n","#FFFFCC"] 10,
+        Run Memory ["-t","Mem: <used>M (<usedratio>%)","-H","8192","-L","4096","-h","#ff0f37","-l","#00F5FF","-n","#FFD700"] 10,
+        Run Swap ["-t","Swap: <usedratio>%","-H","1024","-L","512","-h","#FFB6B0","-l","#CEFFAC","-n","#FFD700"] 10,
 
 
         Run Com "/home/jack/.xmonad/xmobar/trayer-padding-icon.sh" [] "trayerpad" 20,
@@ -84,5 +84,5 @@ Config {
     sepChar = "%",
     alignSep = "}{",
     -- template = "%StdinReader% }{ %multicpu% | %memory% | %swap% | %disku% |  %uname% | <fc=#00ff00>%wlp59s0%</fc> | %battery% | Vol:<fc=#b2b2ff>%volumelevel%</fc> | %ZGGG% | :<fc=#00ff00>%date%</fc> | %trayerpad%"
-    template = "%StdinReader% }{ <fc=#FFDAB9>%multicpu% %memory% %swap% %disku%</fc><fc=#32CD32> | %wlp59s0%</fc> | %battery% | %ZGGG% | :<fc=#00ff00>%date%</fc>"
+    template = "%StdinReader% }{ <fc=#00FFFF>%multicpu% %memory% %swap% %disku%</fc><fc=#00ff00> | %wlp59s0%</fc> | %battery% | %ZGGG% | :<fc=#00ff00>%date%</fc>"
 }
