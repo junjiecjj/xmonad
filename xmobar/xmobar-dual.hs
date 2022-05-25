@@ -51,7 +51,7 @@ Config {
         -- Run Weather "ZGGG" [ "--template", "<station>: | <fc=#FFFFFF><tempC></fc>°C  <windMs>" ] 36000,
 
         -- Run MultiCpu ["-t","<fn=2></fn>:<total>%","-L","20","-H","60","-h","#ff0f37","-l","#00F5FF","-n","#FFD700","-w","3"] 10,
-        Run MultiCpu ["-t","CPU: <total>","-L","30","-H","60","-h","#dc322f","-l","#859900","-n","#839496","-w","3"] 10,
+        Run MultiCpu ["-t","CPU: <total>%","-L","30","-H","60","-h","#dc322f","-l","#859900","-n","#839496","-w","3"] 10,
 
         -- Run MultiCpu [ "-t", "<fn=2></fn>:<total>"
         --              , "-L", "30"
