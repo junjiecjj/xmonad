@@ -179,5 +179,5 @@ Config {
     alignSep = "}{",
     -- template = "%StdinReader% }{ %multicpu% | %memory% | %swap% | %disku% |  %uname% | <fc=#00ff00>%wlp59s0%</fc> | %battery% | Vol:<fc=#b2b2ff>%volumelevel%</fc> | %ZGGG% | :<fc=#00ff00>%date%</fc> | %trayerpad%"
     -- template = "%UnsafeStdinReader% }{ <fc=#00FFFF>%multicpu% | %memory% | %swap% | %disku%  %diskio%</fc><fc=#00ff00> | %dynnetwork% %wlp59s0% </fc> | <fc=#FFD700>%battery% </fc>| %kbd% |<fc=#00ff00>:%date%</fc>"
-    template = "%UnsafeStdinReader% }{ <fc=#00FFFF>%multicpu% | %memory% | %swap% | %disku% </fc><fc=#00ff00> | %dynnetwork% %wlp59s0% </fc> | <fc=#FFD700>%battery% </fc>| %kbd% |<fc=#00ff00>:%date%</fc>"
+    template = "%UnsafeStdinReader% }{ <fc=#00FFFF>%multicpu% | %memory% | %swap% | %disku% </fc><fc=#00ff00> | %dynnetwork% </fc> | <fc=#FFD700>%battery% </fc>| %kbd% |<fc=#00ff00>:%date%</fc>"
 }
