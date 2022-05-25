@@ -26,12 +26,13 @@ import XMonad.Layout.Fullscreen
 import XMonad.Layout.Spiral
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
-
+import XMonad.Layout.MultiToggle
+import XMonad.Layout.MultiToggle.Instances
 
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.DynamicLog     -- statusbar
-import XMonad.Hooks.EwmhDesktops   -- fullscreenEventHook fixes chrome fullscreen
+import XMonad.Hooks.EwmhDesktops  (ewmh)  -- fullscreenEventHook fixes chrome fullscreen
 import XMonad.Hooks.ManageDocks    -- dock/tray mgmt
 import XMonad.Hooks.UrgencyHook    -- window alert bells
 import XMonad.Hooks.SetWMName
@@ -208,7 +209,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Deincrement the number of windows in the master area 插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数。
     , ((modm .|. controlMask    , xK_k), sendMessage (IncMasterN (-1)))
 
-
+    --  Toggle current focus window to fullscreen
+    , ((modm, xK_f), sendMessage $ Toggle FULL)
     -- ================================================================================================================
     -- =======================  同一个标签页的窗口间切换,  ====================
     -- ================================================================================================================
@@ -686,6 +688,7 @@ defaults = defaultConfig {
         -- manageHook         = myManageHook,
         manageHook = manageDocks <+> myManageHook,
         handleEventHook    = docksEventHook,
+        -- handleEventHook    = fullscreenEventHook,
         -- logHook            = myLogHook,
         startupHook        = myStartupHook
     }
