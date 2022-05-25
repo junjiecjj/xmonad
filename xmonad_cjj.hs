@@ -478,6 +478,10 @@ myLayout = avoidStruts (
 
 -- Colors for text and backgrounds of each tab when in "Tabbed" layout.
 tabConfig = defaultTheme {
+    -- fontName  = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=14",
+    -- fontName  = "xft:CaskaydiaCove Nerd Font Mono SemiLight-14",
+    -- fontName  = "xft:CaskaydiaCove Nerd Font Mono-14",
+    fontName  = "xft:WenQuanYi Micro Hei-15",
     activeBorderColor = "#7C7C7C",
     activeTextColor = "#00ff00",
     activeColor = "#7C7C7C",
