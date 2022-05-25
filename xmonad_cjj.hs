@@ -178,19 +178,19 @@ myXPConfig = defaultXPConfig
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- ================================================================================================================
-    --  窗口布局相关快捷键
+    -- =======================  窗口布局相关快捷键=========================
     -- ================================================================================================================
      -- Rotate through the available layout algorithms,遍历各种窗口布局
-    [ ((modm,               xK_space ), sendMessage NextLayout)
+    [ ((modm .|. shiftMask,   xK_space ), sendMessage NextLayout)
 
     --  Reset the layouts on the current workspace to default,将当前标签页窗口布局模式变为default
-    , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
+    , ((modm .|. controlMask, xK_space ), setLayout $ XMonad.layoutHook conf)
 
     , ((modm .|. shiftMask, xK_v ), windowPromptBring myXPConfig)
     , ((modm .|. shiftMask, xK_n ), addWorkspacePrompt myXPConfig)
 
     -- Push window back into tiling,将浮动窗口重新变为平铺
-    , ((modm,               xK_t     ), withFocused $ windows . W.sink)
+    , ((modm,               xK_space     ), withFocused $ windows . W.sink)
 
     -- Resize viewed windows to the correct size
     , ((modm,               xK_n     ), refresh)
@@ -259,15 +259,15 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- ======  桌面间切换以及窗口在桌面间移动,和i3很类似，但是有点不同在于：
     --  i3中左右移动窗口到前后的桌面仅限于存在窗口的桌面，但是xmonad左右移动窗口到左右桌面，桌面可以是不存在窗口的桌面，只按序号来
     -- =============================================================================================================
-    --  聚焦于下一个窗口(标签页，worspace)
+    --  聚焦于下一个桌面(标签页，worspace)
     -- , ((modm,                 xK_Page_Down), nextWS)
     , ((modm,                   xK_quoteright), nextWS)
-    --  聚焦于上一个窗口(标签页，worspace)
+    --  聚焦于上一个桌面(标签页，worspace)
     -- , ((modm,                 xK_Page_Up),   prevWS)
     , ((modm,                   xK_semicolon),   prevWS)
-    --  聚焦于下一个窗口(标签页，worspace)
+    --  聚焦于下一个桌面(标签页，worspace)
     , ((modm .|. shiftMask,     xK_period), nextWS)
-    --  聚焦于上一个窗口(标签页，worspace)
+    --  聚焦于上一个桌面(标签页，worspace)
     , ((modm .|. shiftMask,      xK_comma),   prevWS)
 
 
@@ -282,12 +282,15 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- 将当前窗口移动到下一个桌面，聚焦到下一个桌面
     , ((modm .|. controlMask, xK_semicolon),     shiftToPrev >> prevWS)
 
+
+    -- =============================================================================================================
+    -- ======  显示器间切换以及窗口在显示器间移动
+    -- =============================================================================================================
     -- 切换到上/下一个显示器
     , ((modm,                   xK_bracketright),       nextScreen)
     , ((modm,                   xK_bracketleft),        prevScreen)
     , ((modm .|. controlMask,   xK_period),       nextScreen)
     , ((modm .|. controlMask,   xK_comma),        prevScreen)
-
 
     -- 将当前窗口移动到下一个显示器，但仍然聚焦与当前显示器
     , ((modm .|. shiftMask, xK_bracketright),      shiftNextScreen >> nextScreen)
