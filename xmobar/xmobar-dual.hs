@@ -49,7 +49,7 @@ Config {
         -- Run Weather "ZGGG" [ "--template", "<station>: | <fc=#FFFFFF><tempC></fc>°C  <windMs>" ] 36000,
 
         -- Run MultiCpu ["-t","<fn=2></fn>:<total>%","-L","20","-H","60","-h","#ff0f37","-l","#00F5FF","-n","#FFD700","-w","3"] 10,
-        Run MultiCpu ["-t","CPU: <total>","-L","30","-H","60","-h","#dc322f","-l","#CEFFAC","-n","#FFD700","-w","3"] 10,
+        Run MultiCpu ["-t","CPU: <total>","-L","30","-H","60","-h","#dc322f","-l","#859900","-n","#839496","-w","3"] 10,
 
         -- Run MultiCpu [ "-t", "<fn=2></fn>:<total>"
         --              , "-L", "30"
@@ -59,7 +59,7 @@ Config {
         --              , "-n", "#839496"
         --              , "-w", "3"] 10,
 
-        Run Memory ["-t","Mem: <used>M (<usedratio>%)","-H","8192","-L","4096","-h","#ff0f37","-l","#00F5FF","-n","#FFD700"] 10,
+        Run Memory ["-t","Mem: <used>M (<usedratio>%)","-H","8192","-L","4096","-h","#ff0f37","-l","#859900","-n","#839496"] 10,
         -- Run Memory [ "-t", "<fn=2></fn>:<usedratio>%"
         --            , "-H", "8192"
         --            , "-L", "4096"
@@ -67,7 +67,7 @@ Config {
         --            , "-l", "#859900"
         --            ,"-n", "#839496"] 10,
 
-        Run Swap ["-t","Swap: <usedratio>%","-H","1024","-L","512","-h","#FFB6B0","-l","#CEFFAC","-n","#FFD700"] 10,
+        Run Swap ["-t","Swap: <usedratio>%","-H","1024","-L","512","-h","#FFB6B0","-l","#859900","-n","#839496"] 10,
         -- Run Swap [ "-t", "<fn=2></fn>:<usedratio>%"
         --          , "-H", "1024"
         --          , "-L", "512"
