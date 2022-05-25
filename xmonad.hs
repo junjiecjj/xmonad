@@ -119,8 +119,9 @@ named_ws = [
            "<fn=2>\xf0ac</fn>Browser"   -- web
            , "<fn=2>\xf121</fn>Code" -- code
            , "<fn=2>\xf120</fn>Term" -- term
+           , "<fn=2>\xf130</fn>File" -- file
            , "<fn=2>\xf0ad</fn>Sys" -- sys
-           , "<fn=2>\xf0eb</fn>Chat" -- chat
+           , "<fn=2>\xf124</fn>Chat" -- chat
            , "<fn=2>\xf085</fn>Media" -- media
            , "<fn=2>\xf1fc</fn>Art" -- art
            ]
