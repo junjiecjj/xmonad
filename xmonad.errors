@@ -6,33 +6,33 @@ xmonad.hs:163:14: warning: [-Wdeprecations]
 163 | myXPConfig = defaultXPConfig
     |              ^^^^^^^^^^^^^^^
 
-xmonad.hs:191:37: warning: [-Wdeprecations]
+xmonad.hs:192:37: warning: [-Wdeprecations]
     In the use of ‘windowPromptBring’
     (imported from XMonad.Prompt.Window):
     Deprecated: "Use windowPrompt instead."
     |
-191 |     , ((modm .|. shiftMask, xK_v ), windowPromptBring myXPConfig)
+192 |     , ((modm .|. shiftMask, xK_v ), windowPromptBring myXPConfig)
     |                                     ^^^^^^^^^^^^^^^^^
 
-xmonad.hs:482:13: warning: [-Wdeprecations]
+xmonad.hs:483:13: warning: [-Wdeprecations]
     In the use of ‘defaultTheme’
     (imported from XMonad.Layout.Tabbed, but defined in XMonad.Layout.Decoration):
     Deprecated: "Use def (from Data.Default, and re-exported by XMonad.Layout.Decoration) instead."
     |
-482 | tabConfig = defaultTheme {
+483 | tabConfig = defaultTheme {
     |             ^^^^^^^^^^^^
 
-xmonad.hs:668:12: warning: [-Wdeprecations]
+xmonad.hs:669:12: warning: [-Wdeprecations]
     In the use of ‘defaultConfig’
     (imported from XMonad, but defined in XMonad.Config):
     Deprecated: "Use def (from Data.Default, and re-exported by XMonad and XMonad.Config) instead."
     |
-668 | defaults = defaultConfig {
+669 | defaults = defaultConfig {
     |            ^^^^^^^^^^^^^
 
-xmonad.hs:693:30: warning: [-Wdeprecations]
+xmonad.hs:694:30: warning: [-Wdeprecations]
     In the use of ‘defaultXPConfig’ (imported from XMonad.Prompt):
     Deprecated: "Use def (from Data.Default, and re-exported from XMonad.Prompt) instead."
     |
-693 | getPromptInput = inputPrompt defaultXPConfig "Dict: "
+694 | getPromptInput = inputPrompt defaultXPConfig "Dict: "
     |                              ^^^^^^^^^^^^^^^
