@@ -28,7 +28,7 @@ Config {
     -- font = "xft:CaskaydiaCove Nerd Font Mono:style=ExtraLight:pixelsize=15",
     -- font = "xft:CaskaydiaCove Nerd Font Mono:style=Light:pixelsize=15",
     -- font = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=14",
-    additionalFonts = [ "xft:Inconsolata:size=10:style=Bold","xft:FontAwesome:size=7.5"],
+    additionalFonts = [ "xft:Inconsolata:size=10:style=Bold","xft:FontAwesome:size=8.5"],
     bgColor = "#000000",
     fgColor = "#ffffff",
     border =  BottomB,
