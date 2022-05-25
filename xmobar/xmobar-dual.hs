@@ -23,11 +23,12 @@ Config {
     position = TopP 0 276,
     -- position = Static { xpos = 0 , ypos = 0, width = 1920, height = 24 }
     -- font = "xft:monospace:pixelsize=8",
-    -- font = "xft:WenQuanYi Micro Hei:style=Regular:pixelsize=15",
+    -- font = "xft:Ubuntu Mono-13",
+    font = "xft:WenQuanYi Micro Hei:style=Regular:pixelsize=15",
     -- font = "xft:CaskaydiaCove Nerd Font Mono:style=ExtraLight:pixelsize=15",
     -- font = "xft:CaskaydiaCove Nerd Font Mono:style=Light:pixelsize=15",
-    font = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=14",
-    additionalFonts = ["xft:Inconsolata:size=10:style=Bold","xft:FontAwesome:size=7.5"],
+    -- font = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=14",
+    additionalFonts = [ "xft:Inconsolata:size=10:style=Bold","xft:FontAwesome:size=7.5"],
     bgColor = "#000000",
     fgColor = "#ffffff",
     border =  BottomB,
@@ -109,20 +110,20 @@ Config {
                               , "-h", "#859900"
                               ] 1000,
 
-         -- Run DynNetwork ["-t","<fc=#4db5bd><fn=1></fn></fc> <rx>, <fc=#c678dd><fn=1></fn></fc> <tx>"
-         --                             ,"-H","200"
-         --                             ,"-L","10"
-         --                             ,"-h","#bbc2cf"
-         --                             ,"-l","#bbc2cf"
-         --                             ,"-n","#bbc2cf"] 50,
+        Run DynNetwork ["-t","<fn=2></fn>:<fc=#4db5bd><fn=2></fn></fc> <rx> <fc=#c678dd><fn=2></fn></fc> <tx>"
+                                     ,"-H","200"
+                                     ,"-L","10"
+                                     ,"-h","#bbc2cf"
+                                     ,"-l","#bbc2cf"
+                                     ,"-n","#bbc2cf"] 50,
 
-        Run DynNetwork   [ "--template", "<fn=2></fn> <rx>kB/s <tx>kB/s"
-                       , "--Low", "1000"
-                       , "--High", "5000"
-                       , "--low", "#859900"
-                       , "--normal", "#cb4b16"
-                       , "--high", "#dc322f"
-                       ] 10,
+        -- Run DynNetwork   [ "--template", "<fn=2></fn> <rx>kB/s <tx>kB/s"
+        --                , "--Low", "1000"
+        --                , "--High", "5000"
+        --                , "--low", "#859900"
+        --                , "--normal", "#cb4b16"
+        --                , "--high", "#dc322f"
+        --                ] 10,
 
         -- Run Battery   [ "-t", "<fn=2></fn>: <acstatus>", "--Low", "20", "--High","80", "--low","darkred", "--normal","darkorange", "--high","#81a1c1"
         --                              , "--" -- battery specific options
@@ -165,8 +166,8 @@ Config {
          --                     ] 50,
 
         -- Run Date "%a %b %_d %l:%M" "date" 10,
-        Run Date "%Y-%m-%d %a %H:%M:%S" "date" 10,
-
+        Run Date "<fc=#ECBE7B><fn=1></fn></fc>%Y-%m-%d %a %H:%M:%S" "date" 10,
+        -- Run Date "<fc=#ECBE7B><fn=1></fn></fc> %a %b %_d %I:%M" "date" 300,
         -- Run Volume "default" "Master" [] 10,
 
         -- Run StdinReader,
@@ -177,5 +178,5 @@ Config {
     sepChar = "%",
     alignSep = "}{",
     -- template = "%StdinReader% }{ %multicpu% | %memory% | %swap% | %disku% |  %uname% | <fc=#00ff00>%wlp59s0%</fc> | %battery% | Vol:<fc=#b2b2ff>%volumelevel%</fc> | %ZGGG% | :<fc=#00ff00>%date%</fc> | %trayerpad%"
-    template = "%UnsafeStdinReader% }{ <fc=#00FFFF>%multicpu% %memory% %swap% %disku%  %diskio%</fc><fc=#00ff00> | %dynnetwork% %wlp59s0% </fc> | <fc=#FFD700>%battery% </fc>| %kbd% |<fc=#00ff00>:%date%</fc>"
+    template = "%UnsafeStdinReader% }{ <fc=#00FFFF>%multicpu% | %memory% | %swap% | %disku%  %diskio%</fc><fc=#00ff00> | %dynnetwork% %wlp59s0% </fc> | <fc=#FFD700>%battery% </fc>| %kbd% |<fc=#00ff00>:%date%</fc>"
 }

@@ -109,19 +109,20 @@ myModMask       = mod4Mask
 -- myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 
 
+-- myWorkspaces = ["1: term","2: web","3: code","4:file","5: media","6:chat"] ++ map show [7..9]
 ------------------------------------------------------------------------
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
 -- myWorkspaces = {- clickable . (map xmobarEscape) $ -} ["<fn=2>\xf120</fn>","<fn=2>\xf0ac</fn>","<fn=2>\xf0ad</fn>","<fn=2>\xf0eb</fn>","<fn=2>\xf085</fn>"] ++ map show [6..12]
 named_ws = [
-           "<fn=2>\xf0ac</fn>"   -- web
-           , "<fn=2>\xf121</fn>" -- code
-           , "<fn=2>\xf120</fn>" -- term
-           , "<fn=2>\xf0ad</fn>" -- sys
-           , "<fn=2>\xf0eb</fn>" -- chat
-           , "<fn=2>\xf085</fn>" -- media
-           , "<fn=2>\xf1fc</fn>" -- art
+           "<fn=2>\xf0ac</fn>Browser"   -- web
+           , "<fn=2>\xf121</fn>Code" -- code
+           , "<fn=2>\xf120</fn>Term" -- term
+           , "<fn=2>\xf0ad</fn>Sys" -- sys
+           , "<fn=2>\xf0eb</fn>Chat" -- chat
+           , "<fn=2>\xf085</fn>Media" -- media
+           , "<fn=2>\xf1fc</fn>Art" -- art
            ]
 myWorkspaces = clickable workspaces
   where
@@ -478,10 +479,11 @@ myLayout = avoidStruts (
 
 -- Colors for text and backgrounds of each tab when in "Tabbed" layout.
 tabConfig = defaultTheme {
-    -- fontName  = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=14",
+    -- fontName  = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=12",
     -- fontName  = "xft:CaskaydiaCove Nerd Font Mono SemiLight-14",
     -- fontName  = "xft:CaskaydiaCove Nerd Font Mono-14",
-    fontName  = "xft:WenQuanYi Micro Hei-15",
+    -- fontName  = "xft:WenQuanYi Micro Hei-15",
+    fontName = "xft:WenQuanYi Micro Hei:style=Regular:size=12",
     activeBorderColor = "#7C7C7C",
     activeTextColor = "#00ff00",
     activeColor = "#7C7C7C",

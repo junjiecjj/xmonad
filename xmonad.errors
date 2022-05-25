@@ -1,38 +1,38 @@
 
-xmonad.hs:161:14: warning: [-Wdeprecations]
+xmonad.hs:162:14: warning: [-Wdeprecations]
     In the use of ‘defaultXPConfig’ (imported from XMonad.Prompt):
     Deprecated: "Use def (from Data.Default, and re-exported from XMonad.Prompt) instead."
     |
-161 | myXPConfig = defaultXPConfig
+162 | myXPConfig = defaultXPConfig
     |              ^^^^^^^^^^^^^^^
 
-xmonad.hs:189:37: warning: [-Wdeprecations]
+xmonad.hs:190:37: warning: [-Wdeprecations]
     In the use of ‘windowPromptBring’
     (imported from XMonad.Prompt.Window):
     Deprecated: "Use windowPrompt instead."
     |
-189 |     , ((modm .|. shiftMask, xK_v ), windowPromptBring myXPConfig)
+190 |     , ((modm .|. shiftMask, xK_v ), windowPromptBring myXPConfig)
     |                                     ^^^^^^^^^^^^^^^^^
 
-xmonad.hs:480:13: warning: [-Wdeprecations]
+xmonad.hs:481:13: warning: [-Wdeprecations]
     In the use of ‘defaultTheme’
     (imported from XMonad.Layout.Tabbed, but defined in XMonad.Layout.Decoration):
     Deprecated: "Use def (from Data.Default, and re-exported by XMonad.Layout.Decoration) instead."
     |
-480 | tabConfig = defaultTheme {
+481 | tabConfig = defaultTheme {
     |             ^^^^^^^^^^^^
 
-xmonad.hs:665:12: warning: [-Wdeprecations]
+xmonad.hs:667:12: warning: [-Wdeprecations]
     In the use of ‘defaultConfig’
     (imported from XMonad, but defined in XMonad.Config):
     Deprecated: "Use def (from Data.Default, and re-exported by XMonad and XMonad.Config) instead."
     |
-665 | defaults = defaultConfig {
+667 | defaults = defaultConfig {
     |            ^^^^^^^^^^^^^
 
-xmonad.hs:690:30: warning: [-Wdeprecations]
+xmonad.hs:692:30: warning: [-Wdeprecations]
     In the use of ‘defaultXPConfig’ (imported from XMonad.Prompt):
     Deprecated: "Use def (from Data.Default, and re-exported from XMonad.Prompt) instead."
     |
-690 | getPromptInput = inputPrompt defaultXPConfig "Dict: "
+692 | getPromptInput = inputPrompt defaultXPConfig "Dict: "
     |                              ^^^^^^^^^^^^^^^

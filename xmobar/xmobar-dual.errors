@@ -1,6 +1,6 @@
 
-xmobar-dual.hs:53:37: error:
+xmobar-dual.hs:54:37: error:
     lexical error in string/character literal at character '\61614'
    |
-53 |         Run MultiCpu [ "-t", "<fn=2></fn>:<total>"
+54 |         Run MultiCpu [ "-t", "<fn=2></fn>:<total>"
    |                                     ^

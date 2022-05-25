@@ -482,7 +482,7 @@ myStartupHook = do
 -- Run xmonad with all the defaults we set up.
 --
 main = do
-  xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
+  xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar/xmobar_Pitometsu.hs"
   xmonad $ withUrgencyHook NoUrgencyHook
          $ ewmh defaults { logHook = do
 	                               winset <- gets windowset
