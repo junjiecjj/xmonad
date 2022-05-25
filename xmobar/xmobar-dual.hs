@@ -110,14 +110,14 @@ Config {
                               , "-h", "#859900"
                               ] 1000,
 
-        Run DynNetwork ["-t","<fn=2></fn>:<fc=#4db5bd><fn=2></fn></fc> <rx> <fc=#c678dd><fn=2></fn></fc> <tx>"
+        Run DynNetwork ["-t","<fn=2></fn>:<fc=#4db5bd><fn=2></fn></fc><rx>kB/s <fc=#c678dd><fn=2></fn></fc><tx>kB/s"
                                      ,"-H","200"
                                      ,"-L","10"
                                      ,"-h","#bbc2cf"
                                      ,"-l","#bbc2cf"
                                      ,"-n","#bbc2cf"] 50,
 
-        -- Run DynNetwork   [ "--template", "<fn=2></fn> <rx>kB/s <tx>kB/s"
+        -- Run DynNetwork   [ "--template", "<fn=2></fn>:<fc=#4db5bd><fn=2></fn></fc><rx>kB/s <fc=#c678dd><fn=2></fn></fc><tx>kB/s"
         --                , "--Low", "1000"
         --                , "--High", "5000"
         --                , "--low", "#859900"
@@ -178,5 +178,6 @@ Config {
     sepChar = "%",
     alignSep = "}{",
     -- template = "%StdinReader% }{ %multicpu% | %memory% | %swap% | %disku% |  %uname% | <fc=#00ff00>%wlp59s0%</fc> | %battery% | Vol:<fc=#b2b2ff>%volumelevel%</fc> | %ZGGG% | :<fc=#00ff00>%date%</fc> | %trayerpad%"
-    template = "%UnsafeStdinReader% }{ <fc=#00FFFF>%multicpu% | %memory% | %swap% | %disku%  %diskio%</fc><fc=#00ff00> | %dynnetwork% %wlp59s0% </fc> | <fc=#FFD700>%battery% </fc>| %kbd% |<fc=#00ff00>:%date%</fc>"
+    -- template = "%UnsafeStdinReader% }{ <fc=#00FFFF>%multicpu% | %memory% | %swap% | %disku%  %diskio%</fc><fc=#00ff00> | %dynnetwork% %wlp59s0% </fc> | <fc=#FFD700>%battery% </fc>| %kbd% |<fc=#00ff00>:%date%</fc>"
+    template = "%UnsafeStdinReader% }{ <fc=#00FFFF>%multicpu% | %memory% | %swap% | %disku% </fc><fc=#00ff00> | %dynnetwork% %wlp59s0% </fc> | <fc=#FFD700>%battery% </fc>| %kbd% |<fc=#00ff00>:%date%</fc>"
 }
