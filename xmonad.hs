@@ -192,8 +192,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Push window back into tiling,将浮动窗口重新变为平铺
     , ((modm,               xK_space     ), withFocused $ windows . W.sink)
 
-    -- Resize viewed windows to the correct size
-    , ((modm,               xK_n     ), refresh)
+    -- -- Resize viewed windows to the correct size
+    -- , ((modm,               xK_n     ), refresh)
 
     -- -- Increment the number of windows in the master area  插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数。
     -- , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
@@ -328,6 +328,19 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- close focused window  Win + Shift + Q: 杀死当前窗口
     , ((modm .|. shiftMask, xK_q     ), kill)
+
+
+    -- launch  google-chrome-stale
+    , ((modm ,             xK_g     ), spawn "google-chrome-stale")
+
+
+    -- launch  typora
+    , ((modm ,             xK_t     ), spawn "typora")
+
+    -- launch  nautilus
+    , ((modm ,             xK_n     ), spawn "nautilus")
+    -- launch  thunar
+    , ((modm  .|. shiftMask,     xK_t     ), spawn "thunar")
 
     -- screenshot screen  截图
     , ((0       , xK_Print), spawn "scrot -cd 3 $(xdg-user-dir PICTURES)/'Scrot_%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f; viewnior $f'")
