@@ -331,7 +331,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
 
     -- launch  google-chrome-stale
-    , ((modm ,             xK_g     ), spawn "google-chrome-stale")
+    , ((modm ,             xK_g     ), spawn "google-chrome-stable")
 
 
     -- launch  typora
