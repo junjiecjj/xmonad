@@ -524,6 +524,7 @@ myManageHook = composeAll
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)
     , className =? "Google-chrome"  --> doShift "W"
     , className =? "Steam"          --> doFloat
+    , className =? "stalonetray"                  --> doIgnore
     ]
 
 
