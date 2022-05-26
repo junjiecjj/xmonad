@@ -32,15 +32,6 @@ exec --no-startup-id xrandr --output eDP-1 --primary
 # exec --no-startup-id xrandr --output HDM-1 --mode 1920x1080 --primary
 # exec --no-startup-id xrandr --output HDMI-2  1920*1080 --right-of HDM-1
 
-# System tray
-# if [ -z "$(pgrep stalonetray)" ] ; then
-#     trayer --edge top --align right --widthtype percent --width 10 --heighttype pixel --height 23  --SetPartialStrut true --transparent true --alpha 60 --tint 0x777777 --expand true
-# fi
-
-
-if [ -z "$(pgrep stalonetray)" ] ; then
-    stalonetray  -geometry  "10x1-0+0" -bg "#777777" --icon-size 17 --transparent false --sticky true --window-layer "bottom"  &
-fi
 
 
 feh --recursive --randomize --bg-fill   $(xdg-user-dir PICTURES)'/Wallpapers/'
@@ -136,9 +127,21 @@ if [ -z "$(pgrep  mictray )" ] ; then
      nohup   mictray       >  /dev/null  2>&1 &
 fi
 
+
+#  xautolock锁屏工具
 if [ -z "$(pgrep  xautolock)" ] ; then
      xautolock -time 5 -locker '/usr/bin/betterlockscreen -l' -corners ---- -cornersize 30 &
 fi
 
 
 
+# System tray
+if [ -z "$(pgrep trayer)" ] ; then
+    trayer --edge top --align right --widthtype percent --width 10 --heighttype pixel --height 22  --SetPartialStrut true --transparent true --alpha 60 --tint 0x777777 --expand true
+fi
+
+
+# if [ -z "$(pgrep stalonetray)" ] ; then
+#     # stalonetray  -geometry  "10x1-0+0" -bg "#777777" --icon-size 17 --transparent false --sticky true --window-layer "bottom"  &
+#     stalonetray  -geometry  "10x1-0+0" -bg "#777777" --icon-size 16 --transparent false --sticky true --window-layer "bottom" --grow-gravity  NW  --icon-gravity NW  --max-geometry 0x0 --scrollbars none --sticky  true  --window-type  dock
+# fi
