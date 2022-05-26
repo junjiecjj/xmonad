@@ -22,17 +22,17 @@ xmonad.hs:485:13: warning: [-Wdeprecations]
 485 | tabConfig = defaultTheme {
     |             ^^^^^^^^^^^^
 
-xmonad.hs:671:12: warning: [-Wdeprecations]
+xmonad.hs:673:12: warning: [-Wdeprecations]
     In the use of ‘defaultConfig’
     (imported from XMonad, but defined in XMonad.Config):
     Deprecated: "Use def (from Data.Default, and re-exported by XMonad and XMonad.Config) instead."
     |
-671 | defaults = defaultConfig {
+673 | defaults = defaultConfig {
     |            ^^^^^^^^^^^^^
 
-xmonad.hs:697:30: warning: [-Wdeprecations]
+xmonad.hs:699:30: warning: [-Wdeprecations]
     In the use of ‘defaultXPConfig’ (imported from XMonad.Prompt):
     Deprecated: "Use def (from Data.Default, and re-exported from XMonad.Prompt) instead."
     |
-697 | getPromptInput = inputPrompt defaultXPConfig "Dict: "
+699 | getPromptInput = inputPrompt defaultXPConfig "Dict: "
     |                              ^^^^^^^^^^^^^^^

@@ -22,7 +22,7 @@ Config {
     -- position = Static { xpos = 1920, ypos = 0, width = 1692, height = 19 },
     -- position = TopP 0 276,
     -- position 指定了 xmobar 的位置：左上，长度 90%，而 trayer 的则为右上，长度 10%。刚好能够接上。
-    position = TopW L 90,
+    position = TopW L 89,
     -- position = Static { xpos = 0 , ypos = 0, width = 1920, height = 24 }
     -- font = "xft:monospace:pixelsize=8",
     -- font = "xft:Ubuntu Mono-13",
