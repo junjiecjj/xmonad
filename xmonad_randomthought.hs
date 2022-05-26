@@ -352,11 +352,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
      windows W.swapUp    )
 
   -- Shrink the master area.
-  , ((modMask, xK_h),
+  , ((modMask, xK_minus),
      sendMessage Shrink)
 
   -- Expand the master area.
-  , ((modMask, xK_l),
+  , ((modMask, xK_equal),
      sendMessage Expand)
 
   -- Push window back into tiling.
@@ -375,11 +375,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- TODO: update this binding with avoidStruts, ((modMask, xK_b),
 
   -- Quit xmonad.
-  , ((modMask .|. shiftMask, xK_q),
+  , ((modMask .|. controlMask, xK_e),
      io (exitWith ExitSuccess))
 
   -- Restart xmonad.
-  , ((modMask, xK_q),
+  , ((modMask .|. controlMask, xK_r),
      restart "xmonad" True)
   ]
   ++

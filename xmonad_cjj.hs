@@ -26,12 +26,13 @@ import XMonad.Layout.Fullscreen
 import XMonad.Layout.Spiral
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
-
+import XMonad.Layout.MultiToggle
+import XMonad.Layout.MultiToggle.Instances
 
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.DynamicLog     -- statusbar
-import XMonad.Hooks.EwmhDesktops   -- fullscreenEventHook fixes chrome fullscreen
+import XMonad.Hooks.EwmhDesktops  (ewmh)  -- fullscreenEventHook fixes chrome fullscreen
 import XMonad.Hooks.ManageDocks    -- dock/tray mgmt
 import XMonad.Hooks.UrgencyHook    -- window alert bells
 import XMonad.Hooks.SetWMName
@@ -174,6 +175,7 @@ myXPConfig = defaultXPConfig
     }
 
 
+
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 --
@@ -207,7 +209,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Deincrement the number of windows in the master area 插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数。
     , ((modm .|. controlMask    , xK_k), sendMessage (IncMasterN (-1)))
 
-
+    --  Toggle current focus window to fullscreen
+    , ((modm, xK_f), sendMessage $ Toggle FULL)
     -- ================================================================================================================
     -- =======================  同一个标签页的窗口间切换,  ====================
     -- ================================================================================================================
@@ -521,6 +524,7 @@ myManageHook = composeAll
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)
     , className =? "Google-chrome"  --> doShift "W"
     , className =? "Steam"          --> doFloat
+    , className =? "stalonetray"                  --> doIgnore
     ]
 
 
@@ -557,22 +561,22 @@ myLogHook = dynamicLog
 --myStartupHook = return ()
 myStartupHook = do
                   -- 启动 trayer 以显示 systary
-                  spawn "trayer --edge top --align right --widthtype percent --width 10 --SetDockType true --SetPartialStrut true --transparent true --alpha 0 --tint 0x000000 --expand true --heighttype pixel --height 25"
-                  spawn "ps cax | grep fcitx ; if ! [ $? -eq 0 ]; then fcitx ; fi"
-                  spawn "ps cax | grep fcitx5 ; if ! [ $? -eq 0 ]; then fcitx5 ; fi"
-                  -- spawn "redshift-gtk  &"
-                  spawn "ps cax | grep  redshift-gtk ; if ! [ $? -eq 0 ];          then redshift-gtk ; fi"
-                  spawn "ps cax | grep  nm-applet; if ! [ $? -eq 0 ];              then  nm-applet ; fi"
-                  spawn "ps cax | grep  blueman-applet; if ! [ $? -eq 0 ];         then  blueman-applet ; fi"
-                  spawn "ps cax | grep  picom; if ! [ $? -eq 0 ];                  then  picom --experimental-backends -b; fi"
-                  spawn "ps cax | grep  xscreensaver; if ! [ $? -eq 0 ];           then  xscreensaver  -no-splash ; fi"
-                  spawn "ps cax | grep  flameshot; if ! [ $? -eq 0 ];              then   flameshot ; fi"
-                  spawn "ps cax | grep  dunst; if ! [ $? -eq 0 ];                  then  dunst ; fi"
-                  spawn "ps cax | grep  copyq; if ! [ $? -eq 0 ];                  then  copyq ; fi"
-                  spawn "ps cax | grep  pasystray; if ! [ $? -eq 0 ];              then  pasystray  ; fi"
-                  spawn "ps cax | grep  kmix; if ! [ $? -eq 0 ];                   then  kmix   ; fi"
-                  spawn "ps cax | grep  pa-applet; if ! [ $? -eq 0 ];              then /foo/bar/bin/pa-applet ; fi"
-                  spawn "ps cax | grep  mictray; if ! [ $? -eq 0 ];                then   mictray  ; fi"
+                  -- spawn "trayer --edge top --align right --widthtype percent --width 10 --SetDockType true --SetPartialStrut true --transparent true --alpha 0 --tint 0x000000 --expand true --heighttype pixel --height 25"
+                  -- spawn "ps cax | grep fcitx ; if ! [ $? -eq 0 ]; then fcitx ; fi"
+                  -- spawn "ps cax | grep fcitx5 ; if ! [ $? -eq 0 ]; then fcitx5 ; fi"
+                  -- -- spawn "redshift-gtk  &"
+                  -- spawn "ps cax | grep  redshift-gtk ; if ! [ $? -eq 0 ];          then redshift-gtk ; fi"
+                  -- spawn "ps cax | grep  nm-applet; if ! [ $? -eq 0 ];              then  nm-applet ; fi"
+                  -- spawn "ps cax | grep  blueman-applet; if ! [ $? -eq 0 ];         then  blueman-applet ; fi"
+                  -- spawn "ps cax | grep  picom; if ! [ $? -eq 0 ];                  then  picom --experimental-backends -b; fi"
+                  -- spawn "ps cax | grep  xscreensaver; if ! [ $? -eq 0 ];           then  xscreensaver  -no-splash ; fi"
+                  -- spawn "ps cax | grep  flameshot; if ! [ $? -eq 0 ];              then   flameshot ; fi"
+                  -- spawn "ps cax | grep  dunst; if ! [ $? -eq 0 ];                  then  dunst ; fi"
+                  -- spawn "ps cax | grep  copyq; if ! [ $? -eq 0 ];                  then  copyq ; fi"
+                  -- spawn "ps cax | grep  pasystray; if ! [ $? -eq 0 ];              then  pasystray  ; fi"
+                  -- spawn "ps cax | grep  kmix; if ! [ $? -eq 0 ];                   then  kmix   ; fi"
+                  -- spawn "ps cax | grep  pa-applet; if ! [ $? -eq 0 ];              then /foo/bar/bin/pa-applet ; fi"
+                  -- spawn "ps cax | grep  mictray; if ! [ $? -eq 0 ];                then   mictray  ; fi"
                   -- spawn "nm-applet &"
                   -- spawn "blueman-applet &"
                   -- spawn "picom --experimental-backends -b "
@@ -584,8 +588,9 @@ myStartupHook = do
                   -- spawn "nohup kmix   >/dev/null 2>&1 &"
                   -- spawn "nohup /foo/bar/bin/pa-applet   >/dev/null 2>&1 &"
                   -- spawn "nohup mictray   >/dev/null 2>&1 &"
+                  spawn     "bash ~/.xmonad/autostart_cjj.sh"
                   setDefaultCursor xC_left_ptr    -- 设置鼠标样式
-                  spawn "feh --recursive  --bg-fill $(xdg-user-dir PICTURES)'/Wallpapers/background.jpg'"
+                  -- spawn "feh --recursive  --bg-fill $(xdg-user-dir PICTURES)'/Wallpapers/background.jpg'"
                   -- spawn "volti"
 
 
@@ -685,6 +690,7 @@ defaults = defaultConfig {
         -- manageHook         = myManageHook,
         manageHook = manageDocks <+> myManageHook,
         handleEventHook    = docksEventHook,
+        -- handleEventHook    = fullscreenEventHook,
         -- logHook            = myLogHook,
         startupHook        = myStartupHook
     }

@@ -1,38 +1,7 @@
 
-xmonad.hs:164:14: warning: [-Wdeprecations]
-    In the use of ‘defaultXPConfig’ (imported from XMonad.Prompt):
-    Deprecated: "Use def (from Data.Default, and re-exported from XMonad.Prompt) instead."
+xmonad.hs:162:43: warning: [-Wdeprecations]
+    In the use of ‘spacing’ (imported from XMonad.Layout.Spacing):
+    Deprecated: "Use spacingRaw instead."
     |
-164 | myXPConfig = defaultXPConfig
-    |              ^^^^^^^^^^^^^^^
-
-xmonad.hs:193:37: warning: [-Wdeprecations]
-    In the use of ‘windowPromptBring’
-    (imported from XMonad.Prompt.Window):
-    Deprecated: "Use windowPrompt instead."
-    |
-193 |     , ((modm .|. shiftMask, xK_v ), windowPromptBring myXPConfig)
-    |                                     ^^^^^^^^^^^^^^^^^
-
-xmonad.hs:485:13: warning: [-Wdeprecations]
-    In the use of ‘defaultTheme’
-    (imported from XMonad.Layout.Tabbed, but defined in XMonad.Layout.Decoration):
-    Deprecated: "Use def (from Data.Default, and re-exported by XMonad.Layout.Decoration) instead."
-    |
-485 | tabConfig = defaultTheme {
-    |             ^^^^^^^^^^^^
-
-xmonad.hs:673:12: warning: [-Wdeprecations]
-    In the use of ‘defaultConfig’
-    (imported from XMonad, but defined in XMonad.Config):
-    Deprecated: "Use def (from Data.Default, and re-exported by XMonad and XMonad.Config) instead."
-    |
-673 | defaults = defaultConfig {
-    |            ^^^^^^^^^^^^^
-
-xmonad.hs:699:30: warning: [-Wdeprecations]
-    In the use of ‘defaultXPConfig’ (imported from XMonad.Prompt):
-    Deprecated: "Use def (from Data.Default, and re-exported from XMonad.Prompt) instead."
-    |
-699 | getPromptInput = inputPrompt defaultXPConfig "Dict: "
-    |                              ^^^^^^^^^^^^^^^
+162 | addSpace     = renamed [CutWordsLeft 2] . spacing gap
+    |                                           ^^^^^^^
