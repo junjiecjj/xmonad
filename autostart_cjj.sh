@@ -33,6 +33,9 @@ exec --no-startup-id xrandr --output eDP-1 --primary
 # exec --no-startup-id xrandr --output HDMI-2  1920*1080 --right-of HDM-1
 
 # System tray
+# if [ -z "$(pgrep stalonetray)" ] ; then
+#     trayer --edge top --align right --widthtype percent --width 10 --heighttype pixel --height 23  --SetPartialStrut true --transparent true --alpha 60 --tint 0x777777 --expand true
+# fi
 
 
 if [ -z "$(pgrep stalonetray)" ] ; then

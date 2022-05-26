@@ -1,6 +1,6 @@
 
-xmobar-dual.hs:54:37: error:
-    lexical error in string/character literal at character '\61614'
+xmobar-dual.hs:86:35: error:
+    lexical error in string/character literal at character '\61600'
    |
-54 |         Run MultiCpu [ "-t", "<fn=2></fn>:<total>"
-   |                                     ^
+86 |         Run  DiskIO [("/", "<fn=2></fn>:<read> <write>"),  ("/home", "<fn=2></fn>:<read> <write>")] [] 10,
+   |                                   ^
