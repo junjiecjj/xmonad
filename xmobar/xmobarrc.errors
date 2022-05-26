@@ -1,0 +1,5 @@
+
+xmobarrc.hs:4:8: error: parse error on input ‘,’
+  |
+4 |        , font = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=14"
+  |        ^

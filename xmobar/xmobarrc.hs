@@ -1,10 +1,12 @@
 Config {
-       font = "xft:Zekton:size=13:bold:antialias=true"
-       , additionalFonts = [ "xft:FontAwesome:size=11" ]
+       -- font = "xft:Zekton:size=13:bold:antialias=true",
+        font = "xft:WenQuanYi Micro Hei:style=Regular:pixelsize=15",
+        -- font = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=14",
+        additionalFonts = [ "xft:FontAwesome:size=11" ]
        , allDesktops = True
        , bgColor = "#282c34"
        , fgColor = "#bbc2cf"
-       , position = TopW L 95
+       , position = TopW L 90
        , commands = [ Run Cpu [ "--template", "<fc=#a9a1e1><fn=1></fn></fc> <total>%"
                               , "--Low","3"
                               , "--High","50"
@@ -19,13 +21,18 @@ Config {
                                  ,"-n","#bbc2cf"
                                  ,"-h","#fb4934"] 50
 
-                    , Run Date "<fc=#ECBE7B><fn=1></fn></fc> %a %b %_d %I:%M" "date" 300
+                    , Run Date "<fc=#ECBE7B><fn=1></fn></fc> %Y-%m-%d %a %H:%M:%S" "date" 10
                     , Run DynNetwork ["-t","<fc=#4db5bd><fn=1></fn></fc> <rx>, <fc=#c678dd><fn=1></fn></fc> <tx>"
                                      ,"-H","200"
                                      ,"-L","10"
                                      ,"-h","#bbc2cf"
                                      ,"-l","#bbc2cf"
                                      ,"-n","#bbc2cf"] 50
+
+
+                    , Run DiskU [("/", "/:<free>"),("/home", "/home:<free>")] [] 60
+
+                    , Run  DiskIO [("/", "<fn=2></fn>:<read> <write>"),  ("/home", "<fn=2></fn>:<read> <write>")] [] 10
 
                     , Run CoreTemp ["-t", "<fc=#CDB464><fn=1></fn></fc> <core0>°"
                                    , "-L", "30"
@@ -51,9 +58,15 @@ Config {
                                                    -- charged status
                                                    , "-i"   , "<fc=#98be65>Charged</fc>"
                                          ] 50
-                    , Run StdinReader
+
+
+                   ,  Run Kbd [ ("us(dvp)" , "<fc=#cb4b16>DV</fc>")
+                              , ("ru(winkeys)", "<fc=#dc322f>RU</fc>")
+                               ]
+                    -- , Run StdinReader
+                    , Run UnsafeStdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ %cpu% | %coretemp% | %memory% | %battery% | %dynnetwork% | %date%  |"   -- #69DFFA
+       , template = "%UnsafeStdinReader%}{ %cpu% | %coretemp% | %memory% | <fc=#00FFFF>%disku%</fc> | %battery% | %dynnetwork% | %kbd% | <fc=#00ff00>%date%</fc> |"   -- #69DFFA
        }
