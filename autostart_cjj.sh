@@ -130,7 +130,7 @@ fi
 
 #  xautolock锁屏工具
 if [ -z "$(pgrep  xautolock)" ] ; then
-     xautolock -time 5 -locker '/usr/bin/betterlockscreen -l' -corners ---- -cornersize 30 &
+     xautolock -time 30 -locker '/usr/bin/betterlockscreen -l'   -corners +000 -cornersize 5 -cornerdelay 5 -cornerredelay 180 &
 fi
 
 
