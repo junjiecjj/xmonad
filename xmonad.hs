@@ -18,6 +18,7 @@ import XMonad.Hooks.SetWMName
 import XMonad.Hooks.EwmhDesktops (ewmh)
 
 import XMonad.Layout.Gaps
+import XMonad.Layout.Spiral
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.BinarySpacePartition as BSP
 import XMonad.Layout.NoBorders
@@ -157,6 +158,22 @@ myManageHook = composeAll
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 
+-- Colors for text and backgrounds of each tab when in "Tabbed" layout.
+tabConfig = defaultTheme {
+    -- fontName  = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=12",
+    -- fontName  = "xft:CaskaydiaCove Nerd Font Mono SemiLight-14",
+    -- fontName  = "xft:CaskaydiaCove Nerd Font Mono-14",
+    -- fontName  = "xft:WenQuanYi Micro Hei-15",
+    fontName = "xft:WenQuanYi Micro Hei:style=Regular:size=12",
+    activeBorderColor = "#7C7C7C",
+    activeTextColor = "#00ff00",
+    activeColor = "#7C7C7C",
+    inactiveBorderColor = "#000000",
+    inactiveTextColor = "#EEEEEE",
+    inactiveColor = "#000000"
+}
+
+
 outerGaps    = 2
 myGaps       = gaps [(U, outerGaps), (R, outerGaps), (L, outerGaps), (D, outerGaps)]
 addSpace     = renamed [CutWordsLeft 2] . spacing gap
@@ -167,6 +184,13 @@ tab          =  avoidStruts
                $ tabbed shrinkText myTabTheme
 
 layouts      = avoidStruts (
+
+                Tall 1 (3/100) (1/2) |||
+                tabbed shrinkText tabConfig |||
+                ThreeColMid 1 (3/100) (1/2) |||
+                Mirror (Tall 1 (3/100) (1/2)) |||
+                Full |||
+                spiral (6/7)  |||
                 (
                     renamed [CutWordsLeft 1]
                   $ addTopBar

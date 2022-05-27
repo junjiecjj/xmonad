@@ -18,6 +18,7 @@ import XMonad.Hooks.SetWMName
 import XMonad.Hooks.EwmhDesktops (ewmh)
 
 import XMonad.Layout.Gaps
+import XMonad.Layout.Spiral
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.BinarySpacePartition as BSP
 import XMonad.Layout.NoBorders
@@ -110,7 +111,7 @@ myLauncher = "rofi -show"
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["1: term","2: web","3: code","4:file","5: media"] ++ map show [6..9]
+myWorkspaces = ["1:Browser","2:Code","3:Term","4:File","5:Graph","6:Au/Video"] ++ map show [7..9]
 
 ------------------------------------------------------------------------
 -- Window rules
@@ -157,6 +158,22 @@ myManageHook = composeAll
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 
+-- Colors for text and backgrounds of each tab when in "Tabbed" layout.
+tabConfig = defaultTheme {
+    -- fontName  = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=12",
+    -- fontName  = "xft:CaskaydiaCove Nerd Font Mono SemiLight-14",
+    -- fontName  = "xft:CaskaydiaCove Nerd Font Mono-14",
+    -- fontName  = "xft:WenQuanYi Micro Hei-15",
+    fontName = "xft:WenQuanYi Micro Hei:style=Regular:size=12",
+    activeBorderColor = "#7C7C7C",
+    activeTextColor = "#00ff00",
+    activeColor = "#7C7C7C",
+    inactiveBorderColor = "#000000",
+    inactiveTextColor = "#EEEEEE",
+    inactiveColor = "#000000"
+}
+
+
 outerGaps    = 2
 myGaps       = gaps [(U, outerGaps), (R, outerGaps), (L, outerGaps), (D, outerGaps)]
 addSpace     = renamed [CutWordsLeft 2] . spacing gap
@@ -167,6 +184,13 @@ tab          =  avoidStruts
                $ tabbed shrinkText myTabTheme
 
 layouts      = avoidStruts (
+
+                Tall 1 (3/100) (1/2) |||
+                tabbed shrinkText tabConfig |||
+                ThreeColMid 1 (3/100) (1/2) |||
+                Mirror (Tall 1 (3/100) (1/2)) |||
+                Full |||
+                spiral (6/7)  |||
                 (
                     renamed [CutWordsLeft 1]
                   $ addTopBar
@@ -183,6 +207,9 @@ layouts      = avoidStruts (
 myLayout    = smartBorders
               $ mkToggle (NOBORDERS ?? FULL ?? EOT)
               $ layouts
+
+
+
 
 myNav2DConf = def
     { defaultTiledNavigation    = centerNavigation
@@ -246,9 +273,9 @@ unfocusColor = base02
 
 -- myFont      = "-*-Zekton-medium-*-*-*-*-160-*-*-*-*-*-*"
 -- myBigFont   = "-*-Zekton-medium-*-*-*-*-240-*-*-*-*-*-*"
-myFont      = "xft:Zekton:size=9:bold:antialias=true"
+-- myFont      = "xft:Zekton:size=9:bold:antialias=true"
 -- myFont = "xft:CaskaydiaCove Nerd Font Mono:pixelsize=16"
--- myFont = "xft:WenQuanYi Micro Hei:style=Regular:size=12"
+myFont = "xft:WenQuanYi Micro Hei:style=Regular:size=12"
 myBigFont   = "xft:Zekton:size=9:bold:antialias=true"
 myWideFont  = "xft:Eurostar Black Extended:"
             ++ "style=Regular:pixelsize=180:hinting=true"
