@@ -29,6 +29,21 @@ Config {
                                      ,"-l","#bbc2cf"
                                      ,"-n","#bbc2cf"] 50
 
+                    -- ,  Run DynNetwork ["-t","<fn=2></fn>:<fc=#4db5bd><fn=2></fn></fc><rx>kB/s <fc=#c678dd><fn=2></fn></fc><tx>kB/s"
+                    --                  ,"-H","200"
+                    --                  ,"-L","10"
+                    --                  ,"-h","#bbc2cf"
+                    --                  ,"-l","#bbc2cf"
+                    --                  ,"-n","#bbc2cf"] 50
+
+        -- , Run DynNetwork   [ "--template", "<fn=2></fn>:<fc=#4db5bd><fn=2></fn></fc><rx>kB/s <fc=#c678dd><fn=2></fn></fc><tx>kB/s"
+        --                , "--Low", "1000"
+        --                , "--High", "5000"
+        --                , "--low", "#859900"
+        --                , "--normal", "#cb4b16"
+        --                , "--high", "#dc322f"
+        --                ] 10
+
 
                     , Run DiskU [("/", "/:<free>"),("/home", "/home:<free>")] [] 60
 
