@@ -110,7 +110,7 @@ myLauncher = "rofi -show"
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["1: term","2: web","3: code","4:file","5: media"] ++ map show [6..9]
+myWorkspaces = ["1:Browser","2:Code","3:Term","4:File","5:Graph","6:Au/Video"] ++ map show [7..9]
 
 ------------------------------------------------------------------------
 -- Window rules
@@ -184,6 +184,9 @@ myLayout    = smartBorders
               $ mkToggle (NOBORDERS ?? FULL ?? EOT)
               $ layouts
 
+
+
+
 myNav2DConf = def
     { defaultTiledNavigation    = centerNavigation
     , floatNavigation           = centerNavigation
@@ -246,9 +249,9 @@ unfocusColor = base02
 
 -- myFont      = "-*-Zekton-medium-*-*-*-*-160-*-*-*-*-*-*"
 -- myBigFont   = "-*-Zekton-medium-*-*-*-*-240-*-*-*-*-*-*"
-myFont      = "xft:Zekton:size=9:bold:antialias=true"
+-- myFont      = "xft:Zekton:size=9:bold:antialias=true"
 -- myFont = "xft:CaskaydiaCove Nerd Font Mono:pixelsize=16"
--- myFont = "xft:WenQuanYi Micro Hei:style=Regular:size=12"
+myFont = "xft:WenQuanYi Micro Hei:style=Regular:size=12"
 myBigFont   = "xft:Zekton:size=9:bold:antialias=true"
 myWideFont  = "xft:Eurostar Black Extended:"
             ++ "style=Regular:pixelsize=180:hinting=true"

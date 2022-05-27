@@ -14,35 +14,38 @@ Config {
                               , "--normal","#bbc2cf"
                               , "--high","#fb4934"] 50
 
-                    , Run Memory ["-t","<fc=#51afef><fn=1></fn></fc> <usedratio>%"
-                                 ,"-H","80"
-                                 ,"-L","10"
-                                 ,"-l","#bbc2cf"
-                                 ,"-n","#bbc2cf"
-                                 ,"-h","#fb4934"] 50
 
+                    , Run Memory ["-t","<fc=#51afef><fn=1></fn></fc>: <used>Mb (<usedratio>%)","-H","8192","-L","4096","-h","#ff0f37","-l","#859900","-n","#839496"] 10
+                    -- , Run Memory ["-t","<fc=#51afef><fn=1></fn></fc> <used><usedratio>%"
+                    --              ,"-H","80"
+                    --              ,"-L","10"
+                    --              ,"-l","#bbc2cf"
+                    --              ,"-n","#bbc2cf"
+                    --              ,"-h","#fb4934"] 50
+
+                    , Run Weather "ZGGG" ["-t","<tempC>°C/<skyCondition>","-L","64","-H","77","-n","#FFD700","-h","#ff0fda","-l","#96CBFE"] 3600
                     , Run Date "<fc=#ECBE7B><fn=1></fn></fc> %Y-%m-%d %a %H:%M:%S" "date" 10
-                    , Run DynNetwork ["-t","<fc=#4db5bd><fn=1></fn></fc> <rx>, <fc=#c678dd><fn=1></fn></fc> <tx>"
-                                     ,"-H","200"
-                                     ,"-L","10"
-                                     ,"-h","#bbc2cf"
-                                     ,"-l","#bbc2cf"
-                                     ,"-n","#bbc2cf"] 50
-
-                    -- ,  Run DynNetwork ["-t","<fn=2></fn>:<fc=#4db5bd><fn=2></fn></fc><rx>kB/s <fc=#c678dd><fn=2></fn></fc><tx>kB/s"
+                    -- , Run DynNetwork ["-t", "<fc=#00ff00><fn=1> </fn></fc><fc=#4db5bd><fn=1></fn></fc> <rx>, <fc=#c678dd><fn=1></fn></fc> <tx>"
                     --                  ,"-H","200"
                     --                  ,"-L","10"
                     --                  ,"-h","#bbc2cf"
                     --                  ,"-l","#bbc2cf"
                     --                  ,"-n","#bbc2cf"] 50
 
-        -- , Run DynNetwork   [ "--template", "<fn=2></fn>:<fc=#4db5bd><fn=2></fn></fc><rx>kB/s <fc=#c678dd><fn=2></fn></fc><tx>kB/s"
-        --                , "--Low", "1000"
-        --                , "--High", "5000"
-        --                , "--low", "#859900"
-        --                , "--normal", "#cb4b16"
-        --                , "--high", "#dc322f"
-        --                ] 10
+                    ,  Run DynNetwork ["-t","<fc=#00ff00><fn=1> </fn></fc><fc=#4db5bd><fn=1></fn></fc><rx>kB/s <fc=#c678dd><fn=1></fn></fc><tx>kB/s"
+                                     ,"-H","5000"
+                                     ,"-L","1000"
+                                     ,"-h","#fb4934"
+                                     ,"-l","#bbc2cf"
+                                     ,"-n","#bbc2cf"] 50
+
+                    -- , Run DynNetwork   [ "--template", "<fc=#00ff00><fn=1> </fn></fc><fc=#4db5bd><fn=1></fn></fc><rx>kB/s <fc=#c678dd><fn=1></fn></fc><tx>kB/s"
+                    --                , "--Low", "1000"
+                    --                , "--High", "5000"
+                    --                , "--low", "#859900"
+                    --                , "--normal", "#cb4b16"
+                    --                , "--high", "#dc322f"
+                    --                ] 50
 
 
                     , Run DiskU [("/", "/:<free>"),("/home", "/home:<free>")] [] 60
@@ -83,5 +86,5 @@ Config {
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%UnsafeStdinReader%}{ %cpu% | %coretemp% | %memory% | <fc=#00FFFF>%disku%</fc> | %battery% | %dynnetwork% | %kbd% | <fc=#00ff00>%date%</fc> |"   -- #69DFFA
+       , template = "%UnsafeStdinReader%}{ %cpu% | %coretemp% | %memory% | <fc=#00FFFF>%disku%</fc> | %battery% | %dynnetwork% | %kbd% | %ZGGG% <fc=#00ff00>%date%</fc> |"   -- #69DFFA
        }
