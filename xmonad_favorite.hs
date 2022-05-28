@@ -513,13 +513,13 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. controlMask .|. shiftMask, xK_p), spawn myScreenshot)
 
    -- screenshot screen  截图
-  , ((0       , xK_Print), spawn "scrot -cd 3 $(xdg-user-dir PICTURES)/'Scrot_%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f; viewnior $f'")
-  , ((modMask    , xK_Print), spawn "scrot -cd 3 $(xdg-user-dir PICTURES)/'Scrot_%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'viewnior $f'")
+  , ((0       , xK_Print), spawn "scrot -cd 3 $(xdg-user-dir PICTURES)/'Scrot_%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f; viewnior $f';exec notify-send 'Scrot截图 截取全屏 无GUI 保存指定路径 延迟3s 复制到剪切板 打开查看'")
+  , ((modMask    , xK_Print), spawn "scrot $(xdg-user-dir PICTURES)/'Scrot_%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f; viewnior $f';exec notify-send 'Scrot截图 截取全屏 无GUI 保存指定路径 不延迟 复制到剪切板 打开查看'")
 
   -- screenshot window or area  截图
-  , ((modMask .|. shiftMask, xK_Print),    spawn "deepin-screenshot")
-  , ((shiftMask,          xK_Print),    spawn "flameshot gui -p  $(xdg-user-dir PICTURES) -d 2000")
-  , ((controlMask,        xK_Print),    spawn "flameshot full -c -p  $(xdg-user-dir PICTURES)  -d 2000")
+  , ((modMask .|. shiftMask, xK_Print),    spawn "deepin-screenshot ;exec notify-send '深度截图'")
+  , ((shiftMask,     xK_Print),    spawn "flameshot gui -p  $(xdg-user-dir PICTURES) -d 2000; exec notify-send '火焰截图 无延时 自己选择截图区域 保存在~/图片'")
+  , ((controlMask,   xK_Print),    spawn "flameshot full -c -p  $(xdg-user-dir PICTURES)  -d 2000; exec notify-send '火焰截图 捕获全屏（无GUI）并保存到剪贴板和路径~/图片 延迟2秒'")
 
 
 
