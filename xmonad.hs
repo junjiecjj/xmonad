@@ -347,6 +347,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- Push window back into tiling.将浮动窗口重新变为平铺
   , ((modMask, xK_t), withFocused $ windows . W.sink)
+  , ((modMask, xK_space), withFocused $ windows . W.sink)
 
   , ((modMask, xK_f), sendMessage $ Toggle FULL)
 
@@ -379,7 +380,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_comma),  windows W.focusUp  )
 
   -- Move focus to the master window.聚焦到主窗口
-  , ((modMask, xK_m), windows W.focusMaster  )
+  -- , ((modMask, xK_m), windows W.focusMaster  )
   , ((modMask .|. controlMask, xK_Return), windows W.focusMaster  )
 
   -- Swap the focused window and the master window.将当前窗口与主窗口互换，单向
@@ -533,6 +534,24 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- Increase volume.
   , ((0, xF86XK_AudioRaiseVolume), spawn "amixer -q set Master 5%+")
 
+  -- Decrease light.
+  , ((0, XF86MonBrightnessUp),   spawn "xbacklight -inc 5")
+
+  -- Increase light.
+  , ((0, XF86MonBrightnessDown),  spawn "xbacklight -dec 5")
+
+  --  音乐播放器 controls
+  , ((0, XF86AudioPlay), spawn "playerctl play-pause")
+
+  , ((0, XF86AudioNext),  spawn "playerctl next")
+
+  , ((0, XF86AudioPrev), spawn "playerctl previous")
+
+  --  音乐播放器 controls
+  -- , ((0, XF86AudioPlay),  spawn  "mpc toggle")
+  -- , ((0, XF86AudioNext),  spawn  "mpc next")
+  -- , ((0, XF86AudioPrev),  spawn  "mpc prev")
+
 
 
   -- Mute volume.
@@ -543,6 +562,16 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- Increase volume.
   , ((modMask .|. controlMask, xK_equal),  spawn "amixer -q set Master 5%+")
+
+
+  -- Mute volume.
+  , ((modMask .|. shiftMask, xK_BackSpace),  spawn "set-source-mute @DEFAULT_SOURCE@ toggle")
+
+  -- Decrease volume.
+  , ((modMask .|. shiftMask, xK_minus),   spawn "pactl set-sink-volume @DEFAULT_SINK@ -8%")
+
+  -- Increase volume.
+  , ((modMask .|. shiftMask, xK_equal),  spawn "pactl set-sink-volume @DEFAULT_SINK@ +8%")
 
 
 
@@ -623,6 +652,7 @@ myFocusFollowsMouse = True
 
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
   [
+    --  mod+鼠标左键  将当前窗口变为浮动窗口且移动
     -- mod-button1, Set the window to floating mode and move by dragging
     ((modMask, button1),
      (\w -> focus w >> mouseMoveWindow w))
@@ -632,6 +662,7 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
        (\w -> focus w >> windows W.swapMaster))
 
     -- mod-button3, Set the window to floating mode and resize by dragging
+    -- mod+鼠标右键  缩放窗口
     , ((modMask, button3),
        (\w -> focus w >> mouseResizeWindow w))
 

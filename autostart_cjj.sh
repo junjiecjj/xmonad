@@ -63,8 +63,7 @@ if [ -z "$(pgrep xscreensaver)" ] ; then
 fi
 
 
-# Redshift
-# 护眼工具
+# Redshift 护眼工具
 if [ -z "$(pgrep redshift)" ] ; then
     redshift-gtk &
 fi
@@ -131,6 +130,7 @@ fi
 #  xautolock锁屏工具
 if [ -z "$(pgrep  xautolock)" ] ; then
      xautolock -time 30 -locker '/usr/bin/betterlockscreen -l'   -corners +000 -cornersize 5 -cornerdelay 5 -cornerredelay 180 &
+     sh   ~/.fehbg
 fi
 
 
