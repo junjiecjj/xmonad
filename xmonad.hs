@@ -556,23 +556,23 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 
   -- Mute volume.
-  , ((modMask .|. controlMask, xK_BackSpace),  spawn "amixer -D pulse set Master 1+ toggle")
+  , ((modMask .|. shiftMask, xK_BackSpace),  spawn "amixer -D pulse set Master 1+ toggle")
 
   -- Decrease volume.
-  , ((modMask .|. controlMask, xK_minus),   spawn "amixer -q set Master 5%-")
+  , ((modMask .|. shiftMask, xK_minus),   spawn "amixer -q set Master 5%-")
 
   -- Increase volume.
-  , ((modMask .|. controlMask, xK_equal),  spawn "amixer -q set Master 5%+")
+  , ((modMask .|. shiftMask, xK_equal),  spawn "amixer -q set Master 5%+")
 
 
   -- Mute volume.
-  , ((modMask .|. shiftMask, xK_BackSpace),  spawn "set-source-mute @DEFAULT_SOURCE@ toggle")
+  , ((modMask .|. controlMask, xK_BackSpace),  spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
 
   -- Decrease volume.
-  , ((modMask .|. shiftMask, xK_minus),   spawn "pactl set-sink-volume @DEFAULT_SINK@ -8%")
+  , ((modMask .|. controlMask, xK_minus),   spawn "pactl set-sink-volume @DEFAULT_SINK@ -8%")
 
   -- Increase volume.
-  , ((modMask .|. shiftMask, xK_equal),  spawn "pactl set-sink-volume @DEFAULT_SINK@ +8%")
+  , ((modMask .|. controlMask, xK_equal),  spawn "pactl set-sink-volume @DEFAULT_SINK@ +8%")
 
 
 
