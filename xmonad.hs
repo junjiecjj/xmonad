@@ -338,11 +338,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- Increment the number of windows in the master area.
   -- 插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数
-  , ((modMask, xK_comma), sendMessage (IncMasterN 1))
+  , ((modMask .|. shiftMask, xK_h), sendMessage (IncMasterN 1))
 
   -- Decrement the number of windows in the master area.
   -- 插入主窗格的堆栈，窗口竖向排列. 控制左侧主窗格中显示的窗口数
-  , ((modMask, xK_period),  sendMessage (IncMasterN (-1)))
+  , ((modMask .|. shiftMask, xK_l),  sendMessage (IncMasterN (-1)))
 
 
   -- Push window back into tiling.将浮动窗口重新变为平铺
@@ -360,10 +360,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- ================================================================================================================
 
   -- Move focus to the next window. 在同一虚拟桌面中的窗口之间切换,包括浮动与平铺
-  , ((modMask, xK_j), windows W.focusDown)
+  , ((modMask, xK_k), windows W.focusDown)
 
   -- Move focus to the previous window. 在同一虚拟桌面中的窗口之间切换,包括浮动与平铺
-  , ((modMask, xK_k),  windows W.focusUp  )
+  , ((modMask, xK_j),  windows W.focusUp  )
 
 
   -- Move focus to the next window. 在同一虚拟桌面中的窗口之间切换,包括浮动与平铺
@@ -507,10 +507,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 
   -- Take a selective screenshot using the command specified by mySelectScreenshot.
-  , ((modMask .|. shiftMask, xK_p), spawn mySelectScreenshot)
+  -- , ((modMask .|. shiftMask, xK_p), spawn mySelectScreenshot)
 
   -- Take a full screenshot using the command specified by myScreenshot.
-  , ((modMask .|. controlMask .|. shiftMask, xK_p), spawn myScreenshot)
+  -- , ((modMask .|. controlMask .|. shiftMask, xK_p), spawn myScreenshot)
 
    -- screenshot screen  截图
   , ((0       , xK_Print), spawn "scrot -cd 3 $(xdg-user-dir PICTURES)/'Scrot_%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f; viewnior $f';exec notify-send 'Scrot截图 截取全屏 无GUI 保存指定路径 延迟3s 复制到剪切板 打开查看'")
@@ -607,18 +607,18 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- https://hackage.haskell.org/package/xmonad-contrib-0.13/docs/XMonad-Layout-SubLayouts.html
   [
     -- Tab current focused window with the window to the left
-    ((modMask .|. controlMask, xK_h), sendMessage $ pullGroup L)
+    ((modMask .|. altMask, xK_h), sendMessage $ pullGroup L)
     -- Tab current focused window with the window to the right
-  , ((modMask .|. controlMask, xK_l), sendMessage $ pullGroup R)
+  , ((modMask .|. altMask, xK_l), sendMessage $ pullGroup R)
     -- Tab current focused window with the window above
-  , ((modMask .|. controlMask, xK_k), sendMessage $ pullGroup U)
+  , ((modMask .|. altMask, xK_k), sendMessage $ pullGroup U)
     -- Tab current focused window with the window below
-  , ((modMask .|. controlMask, xK_j), sendMessage $ pullGroup D)
+  , ((modMask .|. altMask, xK_j), sendMessage $ pullGroup D)
 
   -- Tab all windows in the current workspace with current window as the focus
-  , ((modMask .|. controlMask, xK_m), withFocused (sendMessage . MergeAll))
+  , ((modMask .|. altMask, xK_m), withFocused (sendMessage . MergeAll))
   -- Group the current tabbed windows
-  , ((modMask .|. controlMask, xK_u), withFocused (sendMessage . UnMerge))
+  , ((modMask .|. altMask, xK_u), withFocused (sendMessage . UnMerge))
 
   -- Toggle through tabes from the right
   , ((modMask, xK_Tab), onGroup W.focusDown')
