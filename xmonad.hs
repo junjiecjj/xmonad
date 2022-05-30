@@ -535,6 +535,17 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- Increase volume.
   , ((0, xF86XK_AudioRaiseVolume), spawn "amixer -q set Master 5%+")
 
+  -- Mute volume.
+  , ((0, xF86XK_AudioMute), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
+
+  -- Decrease volume.
+  , ((0, xF86XK_AudioLowerVolume),  spawn "pactl set-sink-volume @DEFAULT_SINK@ -8%")
+
+  -- Increase volume.
+  , ((0, xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +8%")
+
+
+
   -- Decrease light.
   , ((0, xF86XK_MonBrightnessUp),   spawn "xbacklight -inc 5")
 
