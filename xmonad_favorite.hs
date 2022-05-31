@@ -413,10 +413,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- =============================================================================================================
     --  聚焦于下一个桌面(标签页，worspace)
     -- , ((modm,                 xK_Page_Down), nextWS)
-    , ((modMask,                   xK_quoteright), nextWS)
+    , ((modMask,                 xK_quoteright), nextWS)
     --  聚焦于上一个桌面(标签页，worspace)
     -- , ((modMask,                 xK_Page_Up),   prevWS)
-    , ((modMask,                   xK_semicolon),   prevWS)
+    , ((modMask,                 xK_semicolon),   prevWS)
     --  聚焦于下一个桌面(标签页，worspace)
     , ((modMask .|. shiftMask,     xK_period), nextWS)
     --  聚焦于上一个桌面(标签页，worspace)
@@ -475,7 +475,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   --  锁屏
   , ((modMask .|. controlMask, xK_b  ),  spawn "betterlockscreen -l")
   , ((modMask .|. controlMask, xK_x  ),  spawn "xscreensaver-command -lock")
-  , ((modMask .|. controlMask, xK_l  ),  spawn "slock")
+  , ((modMask .|. controlMask, xK_s  ),  spawn "slock")
 
   -- Spawn the launcher using command specified by myLauncher.
   -- Use this to launch programs without a key binding.
