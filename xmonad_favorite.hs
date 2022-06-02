@@ -10,12 +10,14 @@ import qualified Data.List as L
 import XMonad
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.UpdatePointer
+import XMonad.Actions.Minimize
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.EwmhDesktops (ewmh)
+import XMonad.Hooks.Minimize
 
 import XMonad.Layout.Gaps
 import XMonad.Layout.Spiral
@@ -33,6 +35,14 @@ import XMonad.Layout.Simplest
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.WindowNavigation
 import XMonad.Layout.ZoomRow
+import XMonad.Layout.Minimize
+import XMonad.Layout.SimplestFloat
+import XMonad.Layout.LayoutModifier
+import XMonad.Layout.LimitWindows (limitWindows, increaseLimit, decreaseLimit)
+import XMonad.Layout.Accordion
+-- import    XMonad.Layout.Tabbed      (Direction2D (D, L, R, U), Theme (..), addTabs,shrinkText)
+import XMonad.Layout.ResizableTile
+import XMonad.Layout.NoBorders   ( noBorders, smartBorders)
 
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
@@ -177,22 +187,14 @@ tabConfig = defaultTheme {
 outerGaps    = 2
 myGaps       = gaps [(U, outerGaps), (R, outerGaps), (L, outerGaps), (D, outerGaps)]
 addSpace     = renamed [CutWordsLeft 2] . spacing gap
-tab          =  avoidStruts
+tabBSP          =  avoidStruts
+               $ minimize
                $ renamed [Replace "Tabbed"]
                $ addTopBar
                $ myGaps
                $ tabbed shrinkText myTabTheme
 
-layouts      = avoidStruts (
-
-                Tall 1 (3/100) (1/2) |||
-                tabbed shrinkText tabConfig |||
-                ThreeColMid 1 (3/100) (1/2) |||
-                Mirror (Tall 1 (3/100) (1/2)) |||
-                Full |||
-                spiral (6/7)  |||
-                (
-                    renamed [CutWordsLeft 1]
+myBSP =       renamed [CutWordsLeft 1]
                   $ addTopBar
                   $ windowNavigation
                   $ renamed [Replace "BSP"]
@@ -200,8 +202,66 @@ layouts      = avoidStruts (
                   $ subLayout [] Simplest
                   $ myGaps
                   $ addSpace (BSP.emptyBSP)
-                )
-                ||| tab
+
+tabs          = renamed [Replace "Tabs"]
+                $ tabbed shrinkText tabConfig
+
+tabTheme = def { 
+    -- fontName  = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=12",
+    -- fontName  = "xft:CaskaydiaCove Nerd Font Mono SemiLight-14",
+    -- fontName  = "xft:CaskaydiaCove Nerd Font Mono-14",
+    -- fontName  = "xft:WenQuanYi Micro Hei-15",
+    fontName = "xft:WenQuanYi Micro Hei:style=Regular:size=12",
+    activeColor         = "#4D4D4D",
+    inactiveColor       = "#282A36",
+    activeBorderColor   = myFocusedBorderColor,
+    inactiveBorderColor = "#282A36"
+ }
+
+
+mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
+mySpacing i = spacingRaw True (Border i i i i) True (Border i i i i) True
+
+-- Layouts
+mytall          = renamed [Replace "MyTall"]
+                $ minimize
+                $ addTabs shrinkText tabTheme
+                $ subLayout [] (Simplest)
+                $ mySpacing 1
+                $ ResizableTall 1 (3/100) (1/2) []
+
+floats        = renamed [Replace "Float"]
+                $ addTopBar
+                $ simplestFloat
+
+accordionTall = renamed [Replace "Tall Accordion"]
+                $ addTopBar
+                $ mySpacing 5
+                $ addTabs shrinkText tabTheme
+                $ Accordion
+
+accordionWide = renamed [Replace "Wide Accordion"]
+                $ addTopBar
+                $ mySpacing 5
+                $ addTabs shrinkText tabTheme
+                $ Mirror Accordion
+
+
+--------------------------------------------------------------------------
+layouts      = avoidStruts (
+                Tall 1 (3/100) (1/2) |||
+                mytall  |||
+                tabs  |||
+                myBSP |||
+                tabBSP  |||
+                Full |||
+                accordionWide |||
+                floats  |||
+                spiral (6/7)  |||
+                ThreeColMid 1 (3/100) (1/2)
+                -- Mirror (Tall 1 (3/100) (1/2)) |||
+                -- tabbed shrinkText tabConfig |||
+                -- accordionTall |||
                )
 
 myLayout    = smartBorders
@@ -350,7 +410,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_space), withFocused $ windows . W.sink)
 
   , ((modMask, xK_f), sendMessage $ Toggle FULL)
-
+  , ((modMask,               xK_m     ), withFocused minimizeWindow)
+  , ((modMask .|. shiftMask, xK_m     ), withLastMinimized maximizeWindowAndFocus)
 
   -- close focused window  Win + Shift + Q: 杀死当前窗口
   , ((modMask .|. shiftMask, xK_q),  kill)
@@ -741,6 +802,7 @@ main = do
 --
 -- No need to modify this.
 --
+myHandleEventHook = minimizeEventHook
 defaults = def {
     -- simple stuff
     terminal           = myTerminal,
@@ -758,7 +820,7 @@ defaults = def {
     -- hooks, layouts
     layoutHook         = myLayout,
     -- handleEventHook    = E.fullscreenEventHook,
-    handleEventHook    = fullscreenEventHook,
+    handleEventHook    = fullscreenEventHook <+> myHandleEventHook,
     manageHook         = manageDocks <+> myManageHook,
     startupHook        = myStartupHook
 }
