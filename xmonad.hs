@@ -125,8 +125,7 @@ myLauncher = "rofi -show"
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["1:Browser","2:Code","3:Term","4:File","5:Graph","6:Au/Video"] ++ map show [7..8]
-
+myWorkspaces =["1:Browser","2:Code","3:Term","4:File","5:Graph","6:Au/Video"] ++ map show [7..8]
 ------------------------------------------------------------------------
 -- Window rules
 -- Execute arbitrary actions and WindowSet manipulations when managing
@@ -351,7 +350,7 @@ layouts      = avoidStruts (
                 floatsB  |||
                 ThreeColMid 1 (3/100) (1/2)
                 -- spiral (6/7)  |||
-                -- Mirror (Tall 1 (3/100) (1/2)) |||
+                -- Mirror (Tall 1 (3/100) (1/2) |||
                 -- tabbed shrinkText tabConfig |||
                 -- accordionTall |||
                )
@@ -621,7 +620,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 
   -- Mirror toggle
-    -- , ((modm,                 xK_x)   , sendMessage $ Toggle MIRROR)
+    , ((modMask,                 xK_x)   , sendMessage $ Toggle MIRROR)
 
   -- ==========================================================================================
   --  APP 快捷键
@@ -824,6 +823,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 -- True if your focus should follow your mouse cursor.
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = True
+
 
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
   [
