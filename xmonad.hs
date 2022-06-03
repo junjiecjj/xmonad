@@ -11,6 +11,7 @@ import XMonad
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.Minimize
+import XMonad.Actions.GridSelect
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -43,6 +44,9 @@ import XMonad.Layout.Accordion
 -- import    XMonad.Layout.Tabbed      (Direction2D (D, L, R, U), Theme (..), addTabs,shrinkText)
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.NoBorders   ( noBorders, smartBorders)
+import XMonad.Layout.GridVariants (Grid(Grid))
+import XMonad.Layout.Magnifier (magnifier)
+
 
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
@@ -121,7 +125,7 @@ myLauncher = "rofi -show"
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["1:Browser","2:Code","3:Term","4:File","5:Graph","6:Au/Video"] ++ map show [7..9]
+myWorkspaces = ["1:Browser","2:Code","3:Term","4:File","5:Graph","6:Au/Video"] ++ map show [7..8]
 
 ------------------------------------------------------------------------
 -- Window rules
@@ -203,10 +207,10 @@ myBSP =       renamed [CutWordsLeft 1]
                   $ myGaps
                   $ addSpace (BSP.emptyBSP)
 
-tabs          = renamed [Replace "Tabs"]
+tabs          = renamed [Replace "Tabbed"]
                 $ tabbed shrinkText tabConfig
 
-tabTheme = def { 
+tabTheme = def {
     -- fontName  = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=12",
     -- fontName  = "xft:CaskaydiaCove Nerd Font Mono SemiLight-14",
     -- fontName  = "xft:CaskaydiaCove Nerd Font Mono-14",
@@ -222,43 +226,131 @@ tabTheme = def {
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing i = spacingRaw True (Border i i i i) True (Border i i i i) True
 
+-- Below is a variation of the above except no borders are applied
+-- if fewer than two windows. So a single window has no gaps.
+mySpacing' :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
+mySpacing' i = spacingRaw True (Border i i i i) True (Border i i i i) True
+
 -- Layouts
-mytall          = renamed [Replace "MyTall"]
+tallA          = renamed [Replace "TallA"]
                 $ minimize
-                $ addTabs shrinkText tabTheme
+                $ addTabs shrinkText myTabTheme
                 $ subLayout [] (Simplest)
-                $ mySpacing 1
+                $ mySpacing 2
                 $ ResizableTall 1 (3/100) (1/2) []
 
-floats        = renamed [Replace "Float"]
+tallB     = renamed [Replace "TallB"]
+                $ minimize
+                -- $ addTopBar
+               $ smartBorders
+               $ windowNavigation
+               $ addTabs shrinkText myTabTheme
+               $ subLayout [] (smartBorders Simplest)
+               $ limitWindows 12
+               $ mySpacing 2
+               $ ResizableTall 1 (3/100) (1/2) []
+
+grid     = renamed [Replace "grid"]
+                $ minimize
+           $ smartBorders
+           $ windowNavigation
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ limitWindows 12
+           $ mySpacing 2
+           $ mkToggle (single MIRROR)
+           $ Grid (16/10)
+
+spirals  = renamed [Replace "Spirals"]
+                $ minimize
+           $ smartBorders
+           $ windowNavigation
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ mySpacing' 1
+           $ spiral (6/7)
+
+floatsA    = renamed [Replace "Float"]
                 $ addTopBar
                 $ simplestFloat
 
+floatsB   = renamed [Replace "floats"]
+               $ smartBorders
+               $ limitWindows 20 simplestFloat
+
+magnify  = renamed [Replace "magnify"]
+                $ minimize
+           $ smartBorders
+           $ windowNavigation
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ magnifier
+           $ limitWindows 12
+           $ mySpacing 2
+           $ ResizableTall 1 (3/100) (1/2) []
+
+monocle  = renamed [Replace "FullScreen"]
+                $ minimize
+           $ smartBorders
+           $ windowNavigation
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ limitWindows 20 Full
+
+threeCol = renamed [Replace "threeCol"]
+                $ minimize
+           $ smartBorders
+           $ windowNavigation
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ limitWindows 7
+           $ ThreeCol 1 (3/100) (1/2)
+threeRow = renamed [Replace "threeRow"]
+                $ minimize
+           $ smartBorders
+           $ windowNavigation
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ limitWindows 7
+           -- Mirror takes a layout and rotates it by 90 degrees.
+           -- So we are applying Mirror to the ThreeCol layout.
+           $ Mirror
+           $ ThreeCol 1 (3/100) (1/2)
+
 accordionTall = renamed [Replace "Tall Accordion"]
-                $ addTopBar
+                $ minimize
+                -- $ addTopBar
                 $ mySpacing 5
-                $ addTabs shrinkText tabTheme
+                $ addTabs shrinkText myTabTheme
                 $ Accordion
 
 accordionWide = renamed [Replace "Wide Accordion"]
-                $ addTopBar
+                $ minimize
+                -- $ addTopBar
                 $ mySpacing 5
-                $ addTabs shrinkText tabTheme
+                $ addTabs shrinkText myTabTheme
                 $ Mirror Accordion
 
 
---------------------------------------------------------------------------
+----------------------------------------------------------------------------------
 layouts      = avoidStruts (
-                Tall 1 (3/100) (1/2) |||
-                mytall  |||
-                tabs  |||
-                myBSP |||
+                -- Tall 1 (3/100) (1/2) |||
+                -- tallA   |||
+                tallB   |||
+                tabs    |||
+                myBSP   |||
                 tabBSP  |||
-                Full |||
+                magnify  |||
+                monocle  |||
+                threeCol |||
+                threeRow |||
+                grid     |||
+                -- spirals  |||
+                -- Full    |||
                 accordionWide |||
-                floats  |||
-                spiral (6/7)  |||
+                floatsB  |||
                 ThreeColMid 1 (3/100) (1/2)
+                -- spiral (6/7)  |||
                 -- Mirror (Tall 1 (3/100) (1/2)) |||
                 -- tabbed shrinkText tabConfig |||
                 -- accordionTall |||
@@ -465,6 +557,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. altMask, xK_bracketright),  sendMessage Expand)
   , ((modMask, xK_equal),  sendMessage $ ExpandTowards R)
 
+  -- Shrink and expand ratio between the secondary panes, for the ResizableTall layout
+  , ((modMask ,          xK_9),       sendMessage MirrorShrink)
+  , ((modMask ,          xK_0),       sendMessage MirrorExpand)
+  -- 最大化桌面，不是全屏当前窗口
+  , ((modMask       , xK_p     ),              sendMessage ToggleStruts)
 
   , ((modMask .|. altMask ,          xK_minus  ), sendMessage $ ExpandTowards D)
   , ((modMask .|. altMask,           xK_equal  ), sendMessage $ ExpandTowards U)
@@ -540,7 +637,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- Spawn the launcher using command specified by myLauncher.
   -- Use this to launch programs without a key binding.
-  , ((modMask, xK_p), spawn myLauncher)
+  -- , ((modMask, xK_p), spawn myLauncher)
 
 
   -- 启动 dmenu，用于启动各种命令
@@ -741,6 +838,8 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
        (\w -> focus w >> mouseResizeWindow w))
 
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
+    ,  ((mod4Mask, button4), (\w -> windows W.focusUp))
+    ,  ((mod4Mask, button5), (\w -> windows W.focusDown))
   ]
 
 
