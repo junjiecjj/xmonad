@@ -500,6 +500,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- Push window back into tiling.将浮动窗口重新变为平铺
   , ((modMask, xK_t), withFocused $ windows . W.sink)
   , ((modMask, xK_space), withFocused $ windows . W.sink)
+  -- , ((modMask, xK_y), withFocused $ windows .toggleFloat)
 
   , ((modMask, xK_f), sendMessage $ Toggle FULL)
   , ((modMask,               xK_m     ), withFocused minimizeWindow)
@@ -550,21 +551,24 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   --  窗口大小调整
   -- ================================================================================================================
   -- Shrink the master area.
-  , ((modMask .|. altMask, xK_bracketleft), sendMessage Shrink)
+  , ((modMask , xK_9), sendMessage Shrink)
   , ((modMask, xK_minus), sendMessage $ ExpandTowards L)
 
   -- Expand the master area.
-  , ((modMask .|. altMask, xK_bracketright),  sendMessage Expand)
+  , ((modMask , xK_0),  sendMessage Expand)
   , ((modMask, xK_equal),  sendMessage $ ExpandTowards R)
 
   -- Shrink and expand ratio between the secondary panes, for the ResizableTall layout
-  , ((modMask ,          xK_9),       sendMessage MirrorShrink)
-  , ((modMask ,          xK_0),       sendMessage MirrorExpand)
+  , ((modMask .|. altMask ,          xK_9),       sendMessage MirrorShrink)
+  , ((modMask .|. altMask ,          xK_0),       sendMessage MirrorExpand)
   -- 最大化桌面，不是全屏当前窗口
   , ((modMask       , xK_p     ),              sendMessage ToggleStruts)
+    -- , ("M-S-a", sendMessage Taller)
+    -- , ("M-S-z", sendMessage Wider)
 
   , ((modMask .|. altMask ,          xK_minus  ), sendMessage $ ExpandTowards D)
   , ((modMask .|. altMask,           xK_equal  ), sendMessage $ ExpandTowards U)
+
     -- =============================================================================================================
     -- ======  桌面间切换以及窗口在桌面间移动,和i3很类似，但是有点不同在于：
     --  i3中左右移动窗口到前后的桌面仅限于存在窗口的桌面，但是xmonad左右移动窗口到左右桌面，桌面可以是不存在窗口的桌面，只按序号来
