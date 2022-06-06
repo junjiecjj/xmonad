@@ -497,7 +497,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 
   -- Push window back into tiling.将浮动窗口重新变为平铺
-  , ((modMask, xK_t), withFocused $ windows . W.sink)
+  -- , ((modMask, xK_t), withFocused $ windows . W.sink)
   , ((modMask, xK_space), withFocused $ windows . W.sink)
   -- , ((modMask, xK_y), withFocused $ windows .toggleFloat)
 
@@ -648,6 +648,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- 启动 rofi，用于启动各种命令
   , ((modMask,           xK_r),  spawn "rofi -show combi" )
+
+  , ((modMask .|. controlMask,       xK_t),  spawn "bash ~/.xmonad/script/touchpad.sh" )
 
 
   -- change wallpapaer
