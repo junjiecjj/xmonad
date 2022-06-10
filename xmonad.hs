@@ -501,7 +501,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_space), withFocused $ windows . W.sink)
   -- , ((modMask, xK_y), withFocused $ windows .toggleFloat)
 
+  -- 最大化与还原
   , ((modMask, xK_f), sendMessage $ Toggle FULL)
+  --  最小化与还原
   , ((modMask,               xK_m     ), withFocused minimizeWindow)
   , ((modMask .|. shiftMask, xK_m     ), withLastMinimized maximizeWindowAndFocus)
 
@@ -609,9 +611,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask .|. controlMask,   xK_comma),        prevScreen)
 
     -- 将当前窗口移动到下一个显示器，但仍然聚焦与当前显示器
-    , ((modMask .|. shiftMask, xK_bracketright),      shiftNextScreen >> nextScreen)
+    , ((modMask .|. shiftMask, xK_bracketright),      shiftNextScreen)
     -- 将当前窗口移动到上一个显示器，但仍然聚焦与当前显示器
-    , ((modMask .|. shiftMask, xK_bracketleft),        shiftPrevScreen >> prevScreen)
+    , ((modMask .|. shiftMask, xK_bracketleft),        shiftPrevScreen)
 
     -- 将当前窗口移动到下一个显示器，聚焦于下一个显示器
     , ((modMask .|. controlMask, xK_bracketright),       shiftNextScreen >> nextScreen)
