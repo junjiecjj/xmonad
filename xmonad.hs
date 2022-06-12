@@ -7,6 +7,7 @@ import System.Exit
 
 import qualified Data.List as L
 
+
 import XMonad
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.UpdatePointer
@@ -920,11 +921,19 @@ myStartupHook = do
   spawn     "bash ~/.xmonad/autostart_cjj.sh"
   setDefaultCursor xC_left_ptr
 
+------------------------------------------------------------------------
+
 
 ------------------------------------------------------------------------
 -- Run xmonad with all the defaults we set up.
 --
 main = do
+  xmprocl <- spawnPipe "xmobar --screen=0"
+  xmprocr <- spawnPipe "xmobar --screen=1"
+  n <- countScreens
+  xmprocs <- mapM (\i -> spawnPipe $ "xmobar" ++ " -x " ++ show i) [0..n-1]
+
+
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar/xmobarrc.hs"
   -- xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar/xmobar-dual.hs"
   -- xmproc <- spawnPipe "taffybar"
