@@ -46,7 +46,7 @@ import XMonad.Layout.ResizableTile
 import XMonad.Layout.NoBorders   ( noBorders, smartBorders)
 import XMonad.Layout.GridVariants (Grid(Grid))
 import XMonad.Layout.Magnifier (magnifier)
-
+import XMonad.Layout.IndependentScreens
 
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
