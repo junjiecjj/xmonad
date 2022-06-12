@@ -88,5 +88,5 @@ Config {
        , sepChar = "%"
        , alignSep = "}{"
        -- , template = "%UnsafeStdinReader%}{ %cpu% | %coretemp% | %memory% | <fc=#00FFFF>%disku%</fc> | %battery% | %dynnetwork% | %kbd% | %ZGGG% <fc=#00ff00>%date%</fc> |"   -- #69DFFA
-       , template = "%UnsafeStdinReader%}{ %cpu% | %coretemp% | %memory% | <fc=#00FFFF>%disku%</fc> | %battery% | %dynnetwork% | %kbd% | <fc=#00ff00>%date%</fc> |"   -- #69DFFA
+       , template = "%UnsafeStdinReader%}{ %dynnetwork% | %cpu% | %coretemp% | %memory% | <fc=#00FFFF>%disku%</fc> | %battery% | %kbd% | <fc=#00ff00>%date%</fc> |"   -- #69DFFA
        }

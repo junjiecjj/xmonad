@@ -347,8 +347,8 @@ layouts      = avoidStruts (
                 -- spirals  |||
                 -- Full    |||
                 accordionWide |||
-                floatsB  |||
-                ThreeColMid 1 (3/100) (1/2)
+                floatsB
+                -- ThreeColMid 1 (3/100) (1/2)
                 -- spiral (6/7)  |||
                 -- Mirror (Tall 1 (3/100) (1/2) |||
                 -- tabbed shrinkText tabConfig |||
