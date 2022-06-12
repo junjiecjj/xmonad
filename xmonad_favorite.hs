@@ -46,7 +46,7 @@ import XMonad.Layout.ResizableTile
 import XMonad.Layout.NoBorders   ( noBorders, smartBorders)
 import XMonad.Layout.GridVariants (Grid(Grid))
 import XMonad.Layout.Magnifier (magnifier)
-
+import XMonad.Layout.IndependentScreens
 
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
@@ -347,8 +347,8 @@ layouts      = avoidStruts (
                 -- spirals  |||
                 -- Full    |||
                 accordionWide |||
-                floatsB  |||
-                ThreeColMid 1 (3/100) (1/2)
+                floatsB
+                -- ThreeColMid 1 (3/100) (1/2)
                 -- spiral (6/7)  |||
                 -- Mirror (Tall 1 (3/100) (1/2) |||
                 -- tabbed shrinkText tabConfig |||
@@ -501,7 +501,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_space), withFocused $ windows . W.sink)
   -- , ((modMask, xK_y), withFocused $ windows .toggleFloat)
 
+  -- 最大化与还原
   , ((modMask, xK_f), sendMessage $ Toggle FULL)
+  --  最小化与还原
   , ((modMask,               xK_m     ), withFocused minimizeWindow)
   , ((modMask .|. shiftMask, xK_m     ), withLastMinimized maximizeWindowAndFocus)
 
@@ -601,6 +603,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     -- =============================================================================================================
     -- ======  显示器间切换以及窗口在显示器间移动
+    -- 两个显示器公用所有的桌面，也就是桌面1在显示器1显示就不会在显示器2显示
     -- =============================================================================================================
     -- 切换到上/下一个显示器
     , ((modMask,                   xK_bracketright),       nextScreen)
@@ -609,9 +612,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask .|. controlMask,   xK_comma),        prevScreen)
 
     -- 将当前窗口移动到下一个显示器，但仍然聚焦与当前显示器
-    , ((modMask .|. shiftMask, xK_bracketright),      shiftNextScreen >> nextScreen)
+    , ((modMask .|. shiftMask, xK_bracketright),      shiftNextScreen)
     -- 将当前窗口移动到上一个显示器，但仍然聚焦与当前显示器
-    , ((modMask .|. shiftMask, xK_bracketleft),        shiftPrevScreen >> prevScreen)
+    , ((modMask .|. shiftMask, xK_bracketleft),        shiftPrevScreen)
 
     -- 将当前窗口移动到下一个显示器，聚焦于下一个显示器
     , ((modMask .|. controlMask, xK_bracketright),       shiftNextScreen >> nextScreen)
@@ -898,6 +901,7 @@ main = do
                 , ppOutput = hPutStrLn xmproc
          } >> updatePointer (0.75, 0.75) (0.75, 0.75)
       }
+
 
 ------------------------------------------------------------------------
 -- Combine it all together

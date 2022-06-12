@@ -902,6 +902,7 @@ main = do
          } >> updatePointer (0.75, 0.75) (0.75, 0.75)
       }
 
+
 ------------------------------------------------------------------------
 -- Combine it all together
 -- A structure containing your configuration settings, overriding
