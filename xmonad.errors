@@ -1,15 +1,15 @@
 
-xmonad.hs:175:13: warning: [-Wdeprecations]
+xmonad.hs:196:13: warning: [-Wdeprecations]
     In the use of ‘defaultTheme’
     (imported from XMonad.Layout.NoFrillsDecoration, but defined in XMonad.Layout.Decoration):
     Deprecated: "Use def (from Data.Default, and re-exported by XMonad.Layout.Decoration) instead."
     |
-175 | tabConfig = defaultTheme {
+196 | tabConfig = defaultTheme {
     |             ^^^^^^^^^^^^
 
-xmonad.hs:192:43: warning: [-Wdeprecations]
+xmonad.hs:213:43: warning: [-Wdeprecations]
     In the use of ‘spacing’ (imported from XMonad.Layout.Spacing):
     Deprecated: "Use spacingRaw instead."
     |
-192 | addSpace     = renamed [CutWordsLeft 2] . spacing gap
+213 | addSpace     = renamed [CutWordsLeft 2] . spacing gap
     |                                           ^^^^^^^
