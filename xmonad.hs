@@ -58,7 +58,7 @@ import qualified XMonad.Layout.PerScreen as PerScreen
 import qualified XMonad.Layout.IndependentScreens as IndependentScreens
 import qualified Data.Bits as Bits
 
-
+import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Util.Cursor
@@ -634,9 +634,12 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- =============================================================================================================
     -- 切换到上/下一个显示器
     , ((modMask,                   xK_bracketright),       nextScreen)
+    , ((modMask,                   xK_Escape),             nextScreen)
     , ((modMask,                   xK_bracketleft),        prevScreen)
-    , ((modMask .|. controlMask,   xK_period),       nextScreen)
-    , ((modMask .|. controlMask,   xK_comma),        prevScreen)
+    -- , ((modMask .|. controlMask,   xK_period),       nextScreen)
+    -- , ((modMask .|. controlMask,   xK_comma),        prevScreen)
+    , ((modMask .|. controlMask,   xK_k),       nextScreen)
+    , ((modMask .|. controlMask,   xK_j),        prevScreen)
     , ((modMask,                   xK_s),            nextScreen)
     , ((modMask,                   xK_a),            prevScreen)
 
@@ -678,6 +681,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- 启动 dmenu，用于启动各种命令
   , ((modMask,         xK_d     ), spawn "dmenu_run")
+  , ((modMask,         xK_x     ), spawn "xterm")
 
   -- 启动 rofi，用于启动各种命令
   , ((modMask,           xK_r),  spawn "rofi -show combi" )
@@ -923,7 +927,6 @@ myStartupHook = do
 
 ------------------------------------------------------------------------
 
-
 ------------------------------------------------------------------------
 -- Run xmonad with all the defaults we set up.
 --
@@ -934,8 +937,12 @@ main = do
   xmprocs <- mapM (\i -> spawnPipe $ "xmobar" ++ " -x " ++ show i) [0..n-1]
 
 
-  xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar/xmobarrc.hs"
+  -- xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar/xmobarrc.hs"
   -- xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar/xmobar-dual.hs"
+
+  xmproc0 <- spawnPipe "xmobar -x 0 ~/.xmonad/xmobar/xmobarrc.hs"
+  xmproc1 <- spawnPipe "xmobar -x 1 ~/.xmonad/xmobar/xmobarrc1.hs"
+
   -- xmproc <- spawnPipe "taffybar"
   xmonad $ docks
          $ withNavigation2DConfig myNav2DConf
@@ -948,12 +955,29 @@ main = do
          $ ewmh
          -- $ pagerHints -- uncomment to use taffybar
          $ defaults {
-         logHook = dynamicLogWithPP xmobarPP {
-                  ppCurrent = xmobarColor xmobarCurrentWorkspaceColor "" . wrap "[" "]"
-                , ppTitle = xmobarColor xmobarTitleColor "" . shorten 50
-                , ppSep = "   "
-                , ppOutput = hPutStrLn xmproc
-         } >> updatePointer (0.75, 0.75) (0.75, 0.75)
+          -- logHook = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP
+          logHook = dynamicLogWithPP  xmobarPP
+            -- XMOBAR SETTINGS
+            { ppOutput = \x -> hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x
+            , ppCurrent = xmobarColor "#00ff00" "" . wrap "[" "]" -- Current workspace
+            , ppVisible = xmobarColor "#98be65" "" -- Visible but not current workspace
+            , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" -- Hidden workspace
+            , ppHiddenNoWindows = xmobarColor "#c792ea" "" -- Hidden workspace
+            , ppTitle = xmobarColor "b3afc2" "" . shorten 60 -- Title of active window
+            , ppSep = "<fc=#666666> | </fc>" -- Separators
+            , ppUrgent = xmobarColor "#C45500" "" . wrap "!" "!" -- Urgent workspace
+            -- , ppExtras = [windowCount]
+            , ppOrder = \(ws:l:t:ex) -> [ws,l] ++ ex ++ [t]
+            }>> updatePointer (0.75, 0.75) (0.75, 0.75)
+
+
+         -- logHook = dynamicLogWithPP xmobarPP {
+         --          ppCurrent = xmobarColor xmobarCurrentWorkspaceColor "" . wrap "[" "]"
+         --        , ppTitle = xmobarColor xmobarTitleColor "" . shorten 50
+         --        , ppSep = "   "
+         --        -- , ppOutput = hPutStrLn xmproc
+         --        , ppOutput = \x -> hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x
+         -- } >> updatePointer (0.75, 0.75) (0.75, 0.75)
       }
 
 ------------------------------------------------------------------------
@@ -987,4 +1011,5 @@ defaults = def {
     handleEventHook    = fullscreenEventHook <+> myHandleEventHook,
     manageHook         = manageDocks <+> myManageHook,
     startupHook        = myStartupHook
+
 }
