@@ -523,9 +523,13 @@ myKeys =
 main :: IO ()
 main = do
     -- Launching three instances of xmobar on their monitors.
-    xmproc0 <- spawnPipe ("xmobar -x 0 $HOME/.xmonad/xmobar1/" ++ colorScheme ++ "-xmobarrc")
-    xmproc1 <- spawnPipe ("xmobar -x 1 $HOME/.xmonad/xmobar1/" ++ colorScheme ++ "-xmobarrc")
-    xmproc2 <- spawnPipe ("xmobar -x 2 $HOME/.xmonad/xmobar1/" ++ colorScheme ++ "-xmobarrc")
+    -- xmproc0 <- spawnPipe ("xmobar -x 0 $HOME/.xmonad/xmobar1/" ++ colorScheme ++ "-xmobarrc")
+    -- xmproc1 <- spawnPipe ("xmobar -x 1 $HOME/.xmonad/xmobar1/" ++ colorScheme ++ "-xmobarrc")
+    -- xmproc2 <- spawnPipe ("xmobar -x 2 $HOME/.xmonad/xmobar1/" ++ colorScheme ++ "-xmobarrc")
+
+    xmproc0 <- spawnPipe "xmobar -x 0 ~/.xmonad/xmobar/xmobarrc.hs"
+    xmproc1 <- spawnPipe "xmobar -x 1 ~/.xmonad/xmobar/xmobarrc1.hs"
+
     -- the xmonad, ya know...what the WM is named after!
     xmonad $ ewmh def
         { manageHook         = myManageHook <+> manageDocks
@@ -547,15 +551,18 @@ main = do
               -- XMOBAR SETTINGS
               { ppOutput = \x -> hPutStrLn xmproc0 x   -- xmobar on monitor 1
                               >> hPutStrLn xmproc1 x   -- xmobar on monitor 2
-                              >> hPutStrLn xmproc2 x   -- xmobar on monitor 3
+                              -- >> hPutStrLn xmproc2 x   -- xmobar on monitor 3
                 -- Current workspace
-              , ppCurrent = xmobarColor color06 "" . wrap
-                            ("<box type=Bottom width=2 mb=2 color=" ++ color06 ++ ">") "</box>"
+              -- , ppCurrent = xmobarColor color06 "" . wrap
+              --               ("<box type=Bottom width=2 mb=2 color=" ++ color06 ++ ">") "</box>"
                 -- Visible but not current workspace
-              , ppVisible = xmobarColor color06 "" . clickable
-                -- Hidden workspace
-              , ppHidden = xmobarColor color05 "" . wrap
-                           ("<box type=Top width=2 mt=2 color=" ++ color05 ++ ">") "</box>" . clickable
+              -- , ppVisible = xmobarColor color06 "" . clickable
+            , ppCurrent = xmobarColor "#00ff00" "" . wrap "[" "]" -- Current workspace
+            , ppVisible = xmobarColor "#98be65" "" -- Visible but not current workspace
+              --   -- Hidden workspace
+              -- , ppHidden = xmobarColor color05 "" . wrap
+              --              ("<box type=Top width=2 mt=2 color=" ++ color05 ++ ">") "</box>" . clickable
+            , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" -- Hidden workspace
                 -- Hidden workspaces (no windows)
               , ppHiddenNoWindows = xmobarColor color05 ""  . clickable
                 -- Title of active window

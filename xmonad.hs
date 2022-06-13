@@ -59,9 +59,8 @@ import qualified XMonad.Layout.IndependentScreens as IndependentScreens
 import qualified Data.Bits as Bits
 
 import XMonad.Util.NamedScratchpad
-import XMonad.Util.Run(spawnPipe)
-import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Util.Cursor
+import XMonad.Util.NamedScratchpad (namedScratchpadFilterOutWorkspacePP)
 
 import Graphics.X11.ExtraTypes.XF86
 import qualified XMonad.StackSet as W
