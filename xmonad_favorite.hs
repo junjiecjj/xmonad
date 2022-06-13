@@ -7,6 +7,7 @@ import System.Exit
 
 import qualified Data.List as L
 
+
 import XMonad
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.UpdatePointer
@@ -48,6 +49,16 @@ import XMonad.Layout.GridVariants (Grid(Grid))
 import XMonad.Layout.Magnifier (magnifier)
 import XMonad.Layout.IndependentScreens
 
+import qualified XMonad.StackSet as StackSet
+import XMonad.Layout.IndependentScreens  (VirtualWorkspace)
+import qualified XMonad.Util.NamedScratchpad as NamedScratchpad
+import qualified XMonad.Actions.CycleWS as CycleWS
+import qualified XMonad.Layout.Gaps as Gaps
+import qualified XMonad.Layout.PerScreen as PerScreen
+import qualified XMonad.Layout.IndependentScreens as IndependentScreens
+import qualified Data.Bits as Bits
+
+import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Util.Cursor
@@ -124,8 +135,19 @@ myLauncher = "rofi -show"
 ------------------------------------------------------------------------
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
---
-myWorkspaces =["1:Browser","2:Code","3:Term","4:File","5:Graph","6:Au/Video"] ++ map show [7..8]
+-- -- withScreens <number of screens> <list of workspace names>
+-- myWorkspaces = IndependentScreens.withScreens 2  ["1:Browser","2:Code","3:Term","4:File","5:Graph","6:Au/Video"] ++ map show [7..8]
+
+myWorkspaces =  ["1:Browser","2:Code","3:Term","4:File","5:Graph","6:Au/Video"] ++ map show [7..8]
+
+
+-- -- Set number of screens
+-- numScreens = 2
+
+-- virtualWorkspaces = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x"]
+-- -- use IndependentScreens to create per-screen workspaces
+-- myWorkspaces = withScreens numScreens virtualWorkspaces
+
 ------------------------------------------------------------------------
 -- Window rules
 -- Execute arbitrary actions and WindowSet manipulations when managing
@@ -459,7 +481,12 @@ myTabTheme = def
     , inactiveTextColor     = base00
     }
 
+
+
+
+
 ------------------------------------------------------------------------
+
 -- Key bindings
 --
 -- modMask lets you specify which modkey you want to use. The default
@@ -607,9 +634,15 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- =============================================================================================================
     -- 切换到上/下一个显示器
     , ((modMask,                   xK_bracketright),       nextScreen)
+    , ((modMask,                   xK_Escape),             nextScreen)
     , ((modMask,                   xK_bracketleft),        prevScreen)
-    , ((modMask .|. controlMask,   xK_period),       nextScreen)
-    , ((modMask .|. controlMask,   xK_comma),        prevScreen)
+    -- , ((modMask .|. controlMask,   xK_period),       nextScreen)
+    -- , ((modMask .|. controlMask,   xK_comma),        prevScreen)
+    , ((modMask .|. controlMask,   xK_k),       nextScreen)
+    , ((modMask .|. controlMask,   xK_j),        prevScreen)
+    , ((modMask,                   xK_s),            nextScreen)
+    , ((modMask,                   xK_a),            prevScreen)
+
 
     -- 将当前窗口移动到下一个显示器，但仍然聚焦与当前显示器
     , ((modMask .|. shiftMask, xK_bracketright),      shiftNextScreen)
@@ -648,6 +681,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- 启动 dmenu，用于启动各种命令
   , ((modMask,         xK_d     ), spawn "dmenu_run")
+  , ((modMask,         xK_x     ), spawn "xterm")
 
   -- 启动 rofi，用于启动各种命令
   , ((modMask,           xK_r),  spawn "rofi -show combi" )
@@ -764,7 +798,23 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. controlMask, xK_r),  restart "xmonad" True)
   ]
   ++
-
+  [
+  -- workspaces are distinct per physical screen
+  -- a "windowSet" is a set of windows per virtual screen
+  -- onCurrentScreen takes a function that operates on a virtual workspace and window set and returns a function that
+  --     operates on a physical workspace and window set
+  -- $ avoids parantheses - gives precendence to function on the right
+  -- . chains functions
+  --     see: https://stackoverflow.com/questions/940382/what-is-the-difference-between-dot-and-dollar-sign
+  -- StackSet.view switches to screen
+  -- StackSet.shift moves content to another screen
+  --
+  -- This is a list comprehension that takes each windowSet (set of windows per virtual screen), and maps a view and shift key binding
+  -- that operates on the appropriate physical screen
+   ((modifierKey Bits..|. myModMask, numberKey), XMonad.windows $ IndependentScreens.onCurrentScreen screenOperation windowSet)
+        | (windowSet, numberKey) <- zip (IndependentScreens.workspaces' defaults) [XMonad.xK_1 .. XMonad.xK_9]
+        , (screenOperation, modifierKey) <- [(StackSet.view, 0), (StackSet.shift, XMonad.shiftMask)]
+  ] ++
   -- mod-[1..9], Switch to workspace N
   -- mod-shift-[1..9], Move client to workspace N
   [((m .|. modMask, k), windows $ f i)
@@ -815,7 +865,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. controlMask,               xK_Up    ), sendMessage $ ExpandTowards U)
   , ((modMask .|. controlMask .|. shiftMask, xK_Up    ), sendMessage $ ShrinkFrom U)
   , ((modMask .|. shiftMask,                  xK_r     ), sendMessage BSP.Rotate)
-  , ((modMask,                                xK_s     ), sendMessage BSP.Swap)
+  , ((modMask .|. shiftMask,               xK_s     ), sendMessage BSP.Swap)
   -- , ((modMask,                               xK_n     ), sendMessage BSP.FocusParent)
   -- , ((modMask .|. controlMask,               xK_n     ), sendMessage BSP.SelectNode)
   -- , ((modMask .|. shiftMask,                 xK_n     ), sendMessage BSP.MoveNode)
@@ -875,13 +925,25 @@ myStartupHook = do
   spawn     "bash ~/.xmonad/autostart_cjj.sh"
   setDefaultCursor xC_left_ptr
 
-
+------------------------------------------------------------------------
+windowCount :: X (Maybe String)
+windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 ------------------------------------------------------------------------
 -- Run xmonad with all the defaults we set up.
 --
 main = do
-  xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar/xmobarrc.hs"
+  xmprocl <- spawnPipe "xmobar --screen=0"
+  xmprocr <- spawnPipe "xmobar --screen=1"
+  n <- countScreens
+  xmprocs <- mapM (\i -> spawnPipe $ "xmobar" ++ " -x " ++ show i) [0..n-1]
+
+
+  -- xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar/xmobarrc.hs"
   -- xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar/xmobar-dual.hs"
+
+  xmproc0 <- spawnPipe "xmobar -x 0 ~/.xmonad/xmobar/xmobarrc.hs"
+  xmproc1 <- spawnPipe "xmobar -x 1 ~/.xmonad/xmobar/xmobarrc1.hs"
+
   -- xmproc <- spawnPipe "taffybar"
   xmonad $ docks
          $ withNavigation2DConfig myNav2DConf
@@ -894,14 +956,32 @@ main = do
          $ ewmh
          -- $ pagerHints -- uncomment to use taffybar
          $ defaults {
-         logHook = dynamicLogWithPP xmobarPP {
-                  ppCurrent = xmobarColor xmobarCurrentWorkspaceColor "" . wrap "[" "]"
-                , ppTitle = xmobarColor xmobarTitleColor "" . shorten 50
-                , ppSep = "   "
-                , ppOutput = hPutStrLn xmproc
-         } >> updatePointer (0.75, 0.75) (0.75, 0.75)
+          -- logHook = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP
+          logHook = dynamicLogWithPP  xmobarPP
+            -- XMOBAR SETTINGS
+            { ppOutput = \x -> hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x
+            , ppCurrent = xmobarColor "#00ff00" "" . wrap "[" "]" -- Current workspace
+            , ppVisible = xmobarColor "#98be65" "" -- Visible but not current workspace
+            , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" -- Hidden workspace
+            , ppHiddenNoWindows = xmobarColor "#c792ea" "" -- Hidden workspace
+            , ppTitle = xmobarColor "b3afc2" "" . shorten 60 -- Title of active window
+            , ppSep = "<fc=#666666> | </fc>" -- Separators
+            , ppUrgent = xmobarColor "#C45500" "" . wrap "!" "!" -- Urgent workspace
+            , ppExtras = [windowCount]
+            , ppOrder = \(ws:l:t:ex) -> [ws,l] ++ ex ++ [t]
+            }>> updatePointer (0.75, 0.75) (0.75, 0.75)
+
+
+         -- logHook = dynamicLogWithPP xmobarPP {
+         --          ppCurrent = xmobarColor xmobarCurrentWorkspaceColor "" . wrap "[" "]"
+         --        , ppTitle = xmobarColor xmobarTitleColor "" . shorten 50
+         --        , ppSep = "   "
+         --        -- , ppOutput = hPutStrLn xmproc
+         --        , ppOutput = \x -> hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x
+         -- } >> updatePointer (0.75, 0.75) (0.75, 0.75)
       }
 
+------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
 -- Combine it all together
@@ -932,4 +1012,5 @@ defaults = def {
     handleEventHook    = fullscreenEventHook <+> myHandleEventHook,
     manageHook         = manageDocks <+> myManageHook,
     startupHook        = myStartupHook
+
 }
