@@ -926,7 +926,8 @@ myStartupHook = do
   setDefaultCursor xC_left_ptr
 
 ------------------------------------------------------------------------
-
+windowCount :: X (Maybe String)
+windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 ------------------------------------------------------------------------
 -- Run xmonad with all the defaults we set up.
 --
@@ -966,7 +967,7 @@ main = do
             , ppTitle = xmobarColor "b3afc2" "" . shorten 60 -- Title of active window
             , ppSep = "<fc=#666666> | </fc>" -- Separators
             , ppUrgent = xmobarColor "#C45500" "" . wrap "!" "!" -- Urgent workspace
-            -- , ppExtras = [windowCount]
+            , ppExtras = [windowCount]
             , ppOrder = \(ws:l:t:ex) -> [ws,l] ++ ex ++ [t]
             }>> updatePointer (0.75, 0.75) (0.75, 0.75)
 
