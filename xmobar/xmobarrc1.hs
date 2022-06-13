@@ -32,7 +32,7 @@ Config {
                     --              ,"-h","#fb4934"] 50
 
                     , Run Weather "ZGGG" ["-t","<tempC>°C/<skyCondition>","-L","64","-H","77","-n","#FFD700","-h","#ff0fda","-l","#96CBFE"] 3600
-                    , Run Date "<fc=#ECBE7B><fn=1></fn></fc> %Y-%m-%d %a %H:%M:%S" "date" 10
+                    , Run Date "<fc=#ECBE7B><fn=1></fn></fc> %Y-%m-%d %A %H:%M:%S" "date" 10
                     -- , Run DynNetwork ["-t", "<fc=#00ff00><fn=1> </fn></fc><fc=#4db5bd><fn=1></fn></fc> <rx>, <fc=#c678dd><fn=1></fn></fc> <tx>"
                     --                  ,"-H","200"
                     --                  ,"-L","10"
