@@ -105,7 +105,17 @@ import XMonad.Actions.DwmPromote   -- swap master like dwm
 
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.UrgencyHook    -- window alert bells
+import qualified Data.Map as M
+import qualified XMonad.StackSet as W
 
+toggleFloat :: Window -> X ()
+toggleFloat w =
+  windows
+    ( \s ->
+        if M.member w (W.floating s)
+          then W.sink w s
+          else (W.float w (W.RationalRect (1 / 3) (1 / 4) (1 / 2) (1 / 2)) s)
+    )
 
 ----------------------------mupdf--------------------------------------------
 -- Terminimport XMonad.Hooks.EwmhDesktopsal
@@ -559,8 +569,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- Push window back into tiling.将浮动窗口重新变为平铺
   -- , ((modMask, xK_t), withFocused $ windows . W.sink)
-  , ((modMask, xK_space), withFocused $ windows . W.sink)
+  , ((modMask .|. altMask, xK_space), withFocused $ windows . W.sink)
   -- , ((modMask, xK_y), withFocused $ windows .toggleFloat)
+
+  , ((modMask , xK_space), withFocused toggleFloat)
 
   -- 最大化与还原
   , ((modMask, xK_f), sendMessage $ Toggle FULL)
