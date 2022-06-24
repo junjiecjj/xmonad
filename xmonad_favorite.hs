@@ -147,7 +147,8 @@ myLauncher = "rofi -show"
 -- -- withScreens <number of screens> <list of workspace names>
 -- myWorkspaces = IndependentScreens.withScreens 2  ["1:Browser","2:Code","3:Term","4:File","5:Graph","6:Au/Video"] ++ map show [7..8]
 
-myWorkspaces =  ["1:Brows","2:Code","3:Term","4:File","5:Editor","6:Graph","7:Video","8:Game"] ++ map show [9]
+-- myWorkspaces =  ["1:Brows","2:Code","3:Term","4:File","5:Editor","6:Graph","7:Video","8:Music","9:Game"] ++ map show [9]
+myWorkspaces =  ["1:Brows","2:Code","3:Term","4:File","5:Editor","6:Graph","7:Video","8:Music","9:Game"]
 
 
 -- -- Set number of screens
