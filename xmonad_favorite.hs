@@ -147,7 +147,7 @@ myLauncher = "rofi -show"
 -- -- withScreens <number of screens> <list of workspace names>
 -- myWorkspaces = IndependentScreens.withScreens 2  ["1:Browser","2:Code","3:Term","4:File","5:Graph","6:Au/Video"] ++ map show [7..8]
 
-myWorkspaces =  ["1:Brows","2:Code","3:Term","4:File","5:Graph","6:Au/Video"] ++ map show [7..8]
+myWorkspaces =  ["1:Brows","2:Code","3:Term","4:File","5:Editor","6:Graph","7:Video","8:Game"] ++ map show [9]
 
 
 -- -- Set number of screens
@@ -1007,8 +1007,10 @@ main = do
             -- XMOBAR SETTINGS
             { ppOutput = \x -> hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x
             , ppCurrent = xmobarColor "#00ff00" "" . wrap "[" "]" -- Current workspace
-            , ppVisible = xmobarColor "#98be65" "" -- Visible but not current workspace
-            , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" -- Hidden workspace
+            -- , ppVisible = xmobarColor "#98be65" "" -- Visible but not current workspace
+            , ppVisible = xmobarColor "#00FF7F" "" -- Visible but not current workspace
+            -- , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" -- Hidden workspace
+            , ppHidden = xmobarColor "#00BFFF" "" . wrap "*" "" -- Hidden workspace
             , ppHiddenNoWindows = xmobarColor "#c792ea" "" -- Hidden workspace
             , ppTitle = xmobarColor "b3afc2" "" . shorten 60 -- Title of active window
             , ppSep = "<fc=#666666> | </fc>" -- Separators
