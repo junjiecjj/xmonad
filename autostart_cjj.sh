@@ -37,6 +37,7 @@ xrandr --output DP-3  --right-of eDP-1  --auto
 
 
 feh --recursive --randomize --bg-fill   $(xdg-user-dir PICTURES)'/Wallpapers/'
+feh --recursive --randomize --bg-fill   $(xdg-user-dir 图片)'/Wallpapers/'
 # feh --recursive  --bg-fill $(xdg-user-dir PICTURES)'/Wallpapers/background.jpg'
 
 
@@ -74,6 +75,7 @@ fi
 if [ -z "$(pgrep picom)" ] ; then
     picom --experimental-backends -b
 fi
+picom --experimental-backends -b  --config ~/.config/awesome/picom_NoblurRoundBrokenCorner.conf
 
 
 # 火焰截图

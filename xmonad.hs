@@ -148,7 +148,7 @@ myLauncher = "rofi -show"
 -- myWorkspaces = IndependentScreens.withScreens 2  ["1:Browser","2:Code","3:Term","4:File","5:Graph","6:Au/Video"] ++ map show [7..8]
 
 -- myWorkspaces =  ["1:Brows","2:Code","3:Term","4:File","5:Editor","6:Graph","7:Video","8:Music","9:Game"] ++ map show [9]
-myWorkspaces =  ["1:Brows","2:Code","3:Term","4:FileM","5:Edit","6:Graph","7:Video","8:Music","9:Game"]
+myWorkspaces =  ["1:Brows","2:CodeIDE","3:Term","4:File","5:Edit","6:Graph","7:Video","8:Music","9:Game","0:remote"]
 
 
 -- -- Set number of screens
@@ -654,6 +654,13 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     --  聚焦于上一个桌面(标签页，worspace)
     -- , ((modMask,                 xK_Page_Up),   prevWS)
     , ((modMask,                 xK_semicolon),   prevWS)
+
+    --  聚焦于下一个桌面(标签页，worspace)
+    , ((modMask,                 xK_s), nextWS)
+    --  聚焦于上一个桌面(标签页，worspace)
+    , ((modMask,                 xK_a),   prevWS)
+
+
     --  聚焦于下一个桌面(标签页，worspace)
     , ((modMask .|. shiftMask,     xK_period), nextWS)
     --  聚焦于上一个桌面(标签页，worspace)
@@ -687,8 +694,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- , ((modMask .|. controlMask,   xK_comma),        prevScreen)
     , ((modMask .|. controlMask,   xK_k),       nextScreen)
     , ((modMask .|. controlMask,   xK_j),        prevScreen)
-    , ((modMask,                   xK_s),            nextScreen)
-    , ((modMask,                   xK_a),            prevScreen)
+    -- , ((modMask,                   xK_s),            nextScreen)
+    -- , ((modMask,                   xK_a),            prevScreen)
 
 
     -- 将当前窗口移动到下一个显示器，但仍然聚焦与当前显示器
