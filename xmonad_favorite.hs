@@ -643,7 +643,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. altMask,         xK_Up ),          sendMessage MirrorShrink)
   , ((modMask .|. altMask,         xK_Down ),        sendMessage MirrorExpand)
 
-  -- modMask .|. shiftMask + 上下左右 是将当前窗口向 上下左右交换/移动
+  -- modMask .|. shiftMask + 上下左右 是将当前窗口在可见屏幕内向 上下左右交换/移动, 跨屏幕的.
 
   -- 最大化桌面，不是全屏当前窗口
   , ((modMask       , xK_p     ),                 sendMessage ToggleStruts)
