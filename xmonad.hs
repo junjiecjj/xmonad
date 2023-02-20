@@ -340,9 +340,9 @@ floatsA    = renamed [Replace "Float"]
                 $ addTopBar
                 $ simplestFloat
 
-floatsB   = renamed [Replace "floats"]
-               $ smartBorders
-               $ limitWindows 20 simplestFloat
+--floatsB   = renamed [Replace "floats"]
+--               $ smartBorders
+--               $ limitWindows 20 simplestFloat
 
 magnify  = renamed [Replace "magnify"]
                 $ minimize
@@ -399,28 +399,32 @@ accordionWide = renamed [Replace "Wide Accordion"]
 
 
 ----------------------------------------------------------------------------------
+
+
 layouts      = avoidStruts (
                 -- Tall 1 (3/100) (1/2) |||
                 -- tallA   |||
-                tallB   |||
                 tabs    |||
-                myBSP   |||
                 tabBSP  |||
-                magnify  |||
+                tallB   |||
+                myBSP   |||
                 monocle  |||
-                threeCol |||
-                threeRow |||
-                grid     |||
+                magnify
+                -- threeCol |||
+                -- threeRow |||
+                -- grid     |||
                 -- spirals  |||
                 -- Full    |||
-                accordionWide |||
-                floatsB
+                -- accordionWide |||
+                -- floatsB
                 -- ThreeColMid 1 (3/100) (1/2)
                 -- spiral (6/7)  |||
                 -- Mirror (Tall 1 (3/100) (1/2) |||
                 -- tabbed shrinkText tabConfig |||
                 -- accordionTall |||
                )
+
+
 
 myLayout    = smartBorders
               $ mkToggle (NOBORDERS ?? FULL ?? EOT)
@@ -626,23 +630,35 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   --  窗口大小调整
   -- ================================================================================================================
   -- Shrink the master area.
-  , ((modMask , xK_9), sendMessage Shrink)
-  , ((modMask, xK_minus), sendMessage $ ExpandTowards L)
-
+  -- TallB 模式下上下缩放
+  , ((modMask .|. controlMask , xK_9), sendMessage Shrink)
   -- Expand the master area.
-  , ((modMask , xK_0),  sendMessage Expand)
-  , ((modMask, xK_equal),  sendMessage $ ExpandTowards R)
-
+  , ((modMask .|. controlMask , xK_0),  sendMessage Expand)
   -- Shrink and expand ratio between the secondary panes, for the ResizableTall layout
   , ((modMask .|. altMask ,          xK_9),       sendMessage MirrorShrink)
   , ((modMask .|. altMask ,          xK_0),       sendMessage MirrorExpand)
+
+  , ((modMask .|. altMask,         xK_Left ),        sendMessage Shrink)
+  , ((modMask .|. altMask,         xK_Right ),       sendMessage Expand)
+  , ((modMask .|. altMask,         xK_Up ),          sendMessage MirrorShrink)
+  , ((modMask .|. altMask,         xK_Down ),        sendMessage MirrorExpand)
+
+
   -- 最大化桌面，不是全屏当前窗口
-  , ((modMask       , xK_p     ),              sendMessage ToggleStruts)
+  , ((modMask       , xK_p     ),                 sendMessage ToggleStruts)
     -- , ("M-S-a", sendMessage Taller)
     -- , ("M-S-z", sendMessage Wider)
 
-  , ((modMask .|. altMask ,          xK_minus  ), sendMessage $ ExpandTowards D)
-  , ((modMask .|. altMask,           xK_equal  ), sendMessage $ ExpandTowards U)
+  -- myBSP 模式下上下缩放
+  , ((modMask, xK_minus),                           sendMessage $ ExpandTowards L)
+  , ((modMask, xK_equal),                           sendMessage $ ExpandTowards R)
+  , ((modMask .|. shiftMask ,          xK_minus ),  sendMessage $ ExpandTowards U)
+  , ((modMask .|. shiftMask,           xK_equal ),  sendMessage $ ExpandTowards D)
+
+  , ((modMask .|. controlMask,         xK_Left ),   sendMessage $ ExpandTowards L)
+  , ((modMask .|. controlMask,         xK_Right ),  sendMessage $ ExpandTowards R)
+  , ((modMask .|. controlMask,         xK_Up ),     sendMessage $ ExpandTowards U)
+  , ((modMask .|. controlMask,         xK_Down ),   sendMessage $ ExpandTowards D)
 
     -- =============================================================================================================
     -- ======  桌面间切换以及窗口在桌面间移动,和i3很类似，但是有点不同在于：
@@ -821,13 +837,13 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 
   -- Mute volume.
-  , ((modMask .|. shiftMask, xK_BackSpace),  spawn "amixer -D pulse set Master 1+ toggle")
+  , ((modMask .|. altMask, xK_BackSpace),  spawn "amixer -D pulse set Master 1+ toggle")
 
   -- Decrease volume.
-  , ((modMask .|. shiftMask, xK_minus),   spawn "amixer -q set Master 5%-")
+  , ((modMask .|. altMask, xK_minus),   spawn "amixer -q set Master 5%-")
 
   -- Increase volume.
-  , ((modMask .|. shiftMask, xK_equal),  spawn "amixer -q set Master 5%+")
+  , ((modMask .|. altMask, xK_equal),  spawn "amixer -q set Master 5%+")
 
 
   -- Mute volume.
@@ -910,13 +926,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- Some bindings for BinarySpacePartition
   -- https://github.com/benweitzman/BinarySpacePartition
   [
-    ((modMask .|. controlMask,               xK_Right ), sendMessage $ ExpandTowards R)
-  , ((modMask .|. controlMask .|. shiftMask, xK_Right ), sendMessage $ ShrinkFrom R)
-  , ((modMask .|. controlMask,               xK_Left  ), sendMessage $ ExpandTowards L)
+  --  myBSP 模式下上下缩放
+    ((modMask .|. controlMask .|. shiftMask, xK_Right ), sendMessage $ ShrinkFrom R)
   , ((modMask .|. controlMask .|. shiftMask, xK_Left  ), sendMessage $ ShrinkFrom L)
-  , ((modMask .|. controlMask,               xK_Down  ), sendMessage $ ExpandTowards D)
   , ((modMask .|. controlMask .|. shiftMask, xK_Down  ), sendMessage $ ShrinkFrom D)
-  , ((modMask .|. controlMask,               xK_Up    ), sendMessage $ ExpandTowards U)
   , ((modMask .|. controlMask .|. shiftMask, xK_Up    ), sendMessage $ ShrinkFrom U)
   , ((modMask .|. shiftMask,                  xK_r     ), sendMessage BSP.Rotate)
   , ((modMask .|. shiftMask,               xK_s     ), sendMessage BSP.Swap)
