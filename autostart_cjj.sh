@@ -14,8 +14,8 @@
 
 # tray icons(eDP1 is the display device's name, use the command "xrandr" to see the display device name.)
 # 其中的eDP1便是我的显示设备名称。如果你的显示设备名称不是eDP1 ，那么需要修改
-xrandr --output eDP-1 --auto --primary
-xrandr --output DP-3  --right-of eDP-1  --auto
+xrandr --output DVI-D-0 --auto --primary
+xrandr --output HDMI-0  --right-of DVI-D-0  --auto
 
 
 # 如果为笔记本外接两个显示器，关闭笔记本的显示器
@@ -64,7 +64,7 @@ fi
 if [ -z "$(pgrep xscreensaver)" ] ; then
     xscreensaver -no-splash &
 fi
-
+xscreensaver -no-splash &
 
 # Redshift 护眼工具
 if [ -z "$(pgrep redshift)" ] ; then
