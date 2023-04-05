@@ -148,7 +148,7 @@ myLauncher = "rofi -show"
 -- myWorkspaces = IndependentScreens.withScreens 2  ["1:Browser","2:Code","3:Term","4:File","5:Graph","6:Au/Video"] ++ map show [7..8]
 
 -- myWorkspaces =  ["1:Brows","2:Code","3:Term","4:File","5:Editor","6:Graph","7:Video","8:Music","9:Game"] ++ map show [9]
-myWorkspaces =  ["1:Brows","2:CodeIDE","3:Term","4:File","5:Edit","6:Graph","7:Video","8:Music","9:Game","0:remote"]
+myWorkspaces =  ["1:Brows","2:Editor","3:CodeIDE","4:Term","5:C/C++","6:Python","7:MatLab","8:VBox","9:Remote"]
 
 
 -- -- Set number of screens
@@ -643,7 +643,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. altMask,         xK_Up ),          sendMessage MirrorShrink)
   , ((modMask .|. altMask,         xK_Down ),        sendMessage MirrorExpand)
 
-  -- modMask .|. shiftMask + 上下左右 是将当前窗口在可见屏幕内向 上下左右交换/移动, 跨屏幕的.
+
+  -- modMask .|. shiftMask + 上下左右 是将当前窗口向 上下左右交换/移动
 
   -- 最大化桌面，不是全屏当前窗口
   , ((modMask       , xK_p     ),                 sendMessage ToggleStruts)
