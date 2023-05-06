@@ -745,6 +745,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. controlMask, xK_b  ),  spawn "betterlockscreen -l")
   , ((modMask .|. controlMask, xK_x  ),  spawn "xscreensaver-command -lock")
   , ((modMask .|. controlMask, xK_s  ),  spawn "slock")
+  , ((modMask .|. controlMask, xK_i  ),  spawn "i3lock -c '#808080'")
 
   -- Spawn the launcher using command specified by myLauncher.
   -- Use this to launch programs without a key binding.
