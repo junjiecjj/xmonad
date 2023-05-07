@@ -409,10 +409,10 @@ layouts      = avoidStruts (
                 tallB   |||
                 myBSP   |||
                 monocle  |||
-                magnify
-                -- threeCol |||
+                magnify |||
+                threeCol |||
                 -- threeRow |||
-                -- grid     |||
+                grid
                 -- spirals  |||
                 -- Full    |||
                 -- accordionWide |||
