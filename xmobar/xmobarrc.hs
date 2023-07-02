@@ -2,6 +2,7 @@ Config {
        --  🚨🧠📅🧭
        -- font = "xft:Zekton:size=13:bold:antialias=true",
         font = "xft:WenQuanYi Micro Hei:style=Regular:pixelsize=15",
+        -- font = "xft:IntelOne Mono:style=Regular:pixelsize=15",
         -- font = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=14",
         additionalFonts = [ "xft:FontAwesome:size=11" ]
        , allDesktops = True
