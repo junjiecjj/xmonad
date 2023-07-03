@@ -4,7 +4,7 @@ Config {
        -- font = "xft:WenQuanYi Micro Hei:style=Regular:pixelsize=28",
        -- font = "xft:IntelOne Mono:style=Regular:pixelsize=24",
         font = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=24",
-        additionalFonts = [ "xft:FontAwesome:size=11" ]
+        additionalFonts = [ "xft:FontAwesome:size=16" ]
        , allDesktops = True
        , overrideRedirect = True
        , textOffset = -1
@@ -16,7 +16,7 @@ Config {
        , bgColor = "#282c34"
        , fgColor = "#bbc2cf"
        , position = TopW L 100
-       , commands = [ Run Cpu [ "--template", "<fc=#a9a1e1><fn=1></fn></fc> <total>%"
+       , commands = [ Run Cpu [ "--template", "<fc=#a9a1e1><fn=1></fn></fc><total>%"
                               , "--Low","3"
                               , "--High","50"
                               , "--low","#bbc2cf"
@@ -24,7 +24,7 @@ Config {
                               , "--high","#fb4934"] 50
 
 
-                    , Run Memory ["-t","<fc=#51afef><fn=1></fn></fc>: <used>Mb (<usedratio>%)","-H","8192","-L","4096","-h","#ff0f37","-l","#859900","-n","#839496"] 20
+                    , Run Memory ["-t","<fc=#51afef><fn=1></fn></fc>:<used>Mb(<usedratio>%)","-H","8192","-L","4096","-h","#ff0f37","-l","#859900","-n","#839496"] 20
                     -- , Run Memory ["-t","<fc=#51afef><fn=1></fn></fc> <used><usedratio>%"
                     --              ,"-H","80"
                     --              ,"-L","10"
@@ -61,7 +61,7 @@ Config {
 
                     , Run  DiskIO [("/", "<fn=2></fn>:<read> <write>"),  ("/home", "<fn=2></fn>:<read> <write>")] [] 60
 
-                    , Run CoreTemp ["-t", "<fc=#CDB464><fn=1></fn></fc> <core0>°"
+                    , Run CoreTemp ["-t", "<fc=#CDB464><fn=1></fn></fc><core0>°"
                                    , "-L", "30"
                                    , "-H", "75"
                                    , "-l", "lightblue"
@@ -70,7 +70,7 @@ Config {
 
                     -- battery monitor
                     , Run BatteryP       [ "BAT0" ]
-                                         [ "--template" , "<fc=#B1DE76><fn=1></fn></fc> <acstatus>"
+                                         [ "--template" , "<fc=#B1DE76><fn=1></fn></fc><acstatus>"
                                          , "--Low"      , "10"        -- units: %
                                          , "--High"     , "80"        -- units: %
                                          , "--low"      , "#fb4934" -- #ff5555
@@ -84,7 +84,7 @@ Config {
                                                    , "-O"   , "<left>% (<fc=#98be65>Charging</fc>)" -- 50fa7b
                                                    -- charged status
                                                    , "-i"   , "<fc=#98be65>Charged</fc>"
-                                         ] 50
+                                         ] 600
 
 
                    ,  Run Kbd [ ("us(dvp)" , "<fc=#cb4b16>DV</fc>")
