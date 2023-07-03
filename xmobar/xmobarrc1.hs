@@ -24,7 +24,7 @@ Config {
                               , "--high","#fb4934"] 50
 
 
-                    , Run Memory ["-t","<fc=#51afef><fn=1></fn></fc>: <used>Mb (<usedratio>%)","-H","8192","-L","4096","-h","#ff0f37","-l","#859900","-n","#839496"] 10
+                    , Run Memory ["-t","<fc=#51afef><fn=1></fn></fc>: <used>Mb (<usedratio>%)","-H","8192","-L","4096","-h","#ff0f37","-l","#859900","-n","#839496"] 20
                     -- , Run Memory ["-t","<fc=#51afef><fn=1></fn></fc> <used><usedratio>%"
                     --              ,"-H","80"
                     --              ,"-L","10"
@@ -32,7 +32,7 @@ Config {
                     --              ,"-n","#bbc2cf"
                     --              ,"-h","#fb4934"] 50
 
-                    , Run Weather "ZGGG" ["-t","<tempC>°C/<skyCondition>","-L","64","-H","77","-n","#FFD700","-h","#ff0fda","-l","#96CBFE"] 3600
+                    , Run Weather "ZGGG" ["-t","<skyCondition>,<tempC>°C","-L","64","-H","77","-n","#FFD700","-h","#ff0fda","-l","#96CBFE"] 1800
                     , Run Date "<fc=#ECBE7B><fn=1></fn></fc> %Y-%m-%d %A %H:%M:%S" "date" 10
                     -- , Run DynNetwork ["-t", "<fc=#00ff00><fn=1> </fn></fc><fc=#4db5bd><fn=1></fn></fc> <rx>, <fc=#c678dd><fn=1></fn></fc> <tx>"
                     --                  ,"-H","200"
@@ -46,7 +46,7 @@ Config {
                                      ,"-L","1000"
                                      ,"-h","#fb4934"
                                      ,"-l","#bbc2cf"
-                                     ,"-n","#bbc2cf"] 50
+                                     ,"-n","#bbc2cf"] 20
 
                     -- , Run DynNetwork   [ "--template", "<fc=#00ff00><fn=1> </fn></fc><fc=#4db5bd><fn=1></fn></fc><rx>kB/s <fc=#c678dd><fn=1></fn></fc><tx>kB/s"
                     --                , "--Low", "1000"
@@ -59,7 +59,7 @@ Config {
 
                     , Run DiskU [("/", "/:<free>"),("/home", "/home:<free>")] [] 60
 
-                    , Run  DiskIO [("/", "<fn=2></fn>:<read> <write>"),  ("/home", "<fn=2></fn>:<read> <write>")] [] 10
+                    , Run  DiskIO [("/", "<fn=2></fn>:<read> <write>"),  ("/home", "<fn=2></fn>:<read> <write>")] [] 60
 
                     , Run CoreTemp ["-t", "<fc=#CDB464><fn=1></fn></fc> <core0>°"
                                    , "-L", "30"
@@ -96,5 +96,5 @@ Config {
        , sepChar = "%"
        , alignSep = "}{"
        -- , template = "%UnsafeStdinReader%}{ %cpu% | %coretemp% | %memory% | <fc=#00FFFF>%disku%</fc> | %battery% | %dynnetwork% | %kbd% | %ZGGG% <fc=#00ff00>%date%</fc> |"   -- #69DFFA
-       , template = "%UnsafeStdinReader%}{ | %dynnetwork% | %cpu% %coretemp% %memory% <fc=#00FFFF>%disku%</fc> | %battery% %kbd% |<fc=#00ff00>%date%</fc> |"   -- #69DFFA
+       , template = "%UnsafeStdinReader%}{ | %dynnetwork% | %cpu% %coretemp% %memory% <fc=#00FFFF>%disku%</fc> | %battery% %kbd% |<fc=#00ff00>%date%</fc> | %ZGGG% |"   -- #69DFFA
        }
