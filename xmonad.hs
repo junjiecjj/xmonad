@@ -148,7 +148,7 @@ myLauncher = "rofi -show"
 -- myWorkspaces = IndependentScreens.withScreens 2  ["1:Browser","2:Code","3:Term","4:File","5:Graph","6:Au/Video"] ++ map show [7..8]
 
 -- myWorkspaces =  ["1:Brows","2:Code","3:Term","4:File","5:Editor","6:Graph","7:Video","8:Music","9:Game"] ++ map show [9]
-myWorkspaces =  ["1:Brows","2:Editor","3:CodeIDE","4:Term","5:C/C++","6:Python","7:MatLab","8:VBox","9:Remote"]
+myWorkspaces =  ["1:Brows","2:Editor","3:CodeIDE","4:Term","5:C/C++","6:Python","7:MatLab","8:VBox","9:Remote","10:Chat"]
 
 
 -- -- Set number of screens
@@ -574,7 +574,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- Push window back into tiling.将浮动窗口重新变为平铺
   -- , ((modMask, xK_t), withFocused $ windows . W.sink)
-  , ((modMask .|. altMask, xK_space), withFocused $ windows . W.sink)
+  -- , ((modMask .|. altMask, xK_space), withFocused $ windows . W.sink)
   -- , ((modMask, xK_y), withFocused $ windows .toggleFloat)
 
   , ((modMask , xK_space), withFocused toggleFloat)
@@ -631,12 +631,12 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- ================================================================================================================
   -- Shrink the master area.
   -- TallB 模式下上下缩放
-  , ((modMask .|. controlMask , xK_9), sendMessage Shrink)
+  -- , ((modMask .|. controlMask , xK_9), sendMessage Shrink)
   -- Expand the master area.
-  , ((modMask .|. controlMask , xK_0),  sendMessage Expand)
+  -- , ((modMask .|. controlMask , xK_0),  sendMessage Expand)
   -- Shrink and expand ratio between the secondary panes, for the ResizableTall layout
-  , ((modMask .|. altMask ,          xK_9),       sendMessage MirrorShrink)
-  , ((modMask .|. altMask ,          xK_0),       sendMessage MirrorExpand)
+  -- , ((modMask .|. altMask ,          xK_9),       sendMessage MirrorShrink)
+  -- , ((modMask .|. altMask ,          xK_0),       sendMessage MirrorExpand)
 
   , ((modMask .|. altMask,         xK_Left ),        sendMessage Shrink)
   , ((modMask .|. altMask,         xK_Right ),       sendMessage Expand)
@@ -657,6 +657,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. shiftMask ,          xK_minus ),  sendMessage $ ExpandTowards U)
   , ((modMask .|. shiftMask,           xK_equal ),  sendMessage $ ExpandTowards D)
 
+ 
   , ((modMask .|. controlMask,         xK_Left ),   sendMessage $ ExpandTowards L)
   , ((modMask .|. controlMask,         xK_Right ),  sendMessage $ ExpandTowards R)
   , ((modMask .|. controlMask,         xK_Up ),     sendMessage $ ExpandTowards U)
@@ -710,8 +711,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask,                   xK_bracketleft),        prevScreen)
     -- , ((modMask .|. controlMask,   xK_period),       nextScreen)
     -- , ((modMask .|. controlMask,   xK_comma),        prevScreen)
-    , ((modMask .|. controlMask,   xK_k),       nextScreen)
-    , ((modMask .|. controlMask,   xK_j),        prevScreen)
+    -- , ((modMask .|. controlMask,   xK_k),        nextScreen)
+    -- , ((modMask .|. controlMask,   xK_j),        prevScreen)
     -- , ((modMask,                   xK_s),            nextScreen)
     -- , ((modMask,                   xK_a),            prevScreen)
 
@@ -925,21 +926,21 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- , ((modMask, xK_grave), onGroup W.focusDown')
   ]
 
-  ++
+ --  ++
   -- Some bindings for BinarySpacePartition
   -- https://github.com/benweitzman/BinarySpacePartition
-  [
+  -- [
   --  myBSP 模式下上下缩放
-    ((modMask .|. controlMask .|. shiftMask, xK_Right ), sendMessage $ ShrinkFrom R)
-  , ((modMask .|. controlMask .|. shiftMask, xK_Left  ), sendMessage $ ShrinkFrom L)
-  , ((modMask .|. controlMask .|. shiftMask, xK_Down  ), sendMessage $ ShrinkFrom D)
-  , ((modMask .|. controlMask .|. shiftMask, xK_Up    ), sendMessage $ ShrinkFrom U)
-  , ((modMask .|. shiftMask,                  xK_r     ), sendMessage BSP.Rotate)
-  , ((modMask .|. shiftMask,               xK_s     ), sendMessage BSP.Swap)
+  --   ((modMask .|. controlMask .|. shiftMask, xK_Right ), sendMessage $ ShrinkFrom R)
+  -- , ((modMask .|. controlMask .|. shiftMask, xK_Left  ), sendMessage $ ShrinkFrom L)
+  -- , ((modMask .|. controlMask .|. shiftMask, xK_Down  ), sendMessage $ ShrinkFrom D)
+ --  , ((modMask .|. controlMask .|. shiftMask, xK_Up    ), sendMessage $ ShrinkFrom U)
+  -- , ((modMask .|. shiftMask,                  xK_r     ), sendMessage BSP.Rotate)
+ --  , ((modMask .|. shiftMask,               xK_s     ), sendMessage BSP.Swap)
   -- , ((modMask,                               xK_n     ), sendMessage BSP.FocusParent)
   -- , ((modMask .|. controlMask,               xK_n     ), sendMessage BSP.SelectNode)
   -- , ((modMask .|. shiftMask,                 xK_n     ), sendMessage BSP.MoveNode)
-  ]
+  -- ]
 
 ------------------------------------------------------------------------
 -- Mouse bindings

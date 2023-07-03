@@ -1,9 +1,9 @@
 Config {
        --  🚨🧠📅🧭
        -- font = "xft:Zekton:size=13:bold:antialias=true",
-        -- font = "xft:WenQuanYi Micro Hei:style=Regular:pixelsize=15",
-        font = "xft:IntelOne Mono:style=Regular:pixelsize=19",
-        -- font = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=14",
+       -- font = "xft:WenQuanYi Micro Hei:style=Regular:pixelsize=28",
+       -- font = "xft:IntelOne Mono:style=Regular:pixelsize=24",
+        font = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=24",
         additionalFonts = [ "xft:FontAwesome:size=11" ]
        , allDesktops = True
        , overrideRedirect = True
@@ -96,5 +96,5 @@ Config {
        , sepChar = "%"
        , alignSep = "}{"
        -- , template = "%UnsafeStdinReader%}{ %cpu% | %coretemp% | %memory% | <fc=#00FFFF>%disku%</fc> | %battery% | %dynnetwork% | %kbd% | %ZGGG% <fc=#00ff00>%date%</fc> |"   -- #69DFFA
-       , template = "%UnsafeStdinReader%}{ %dynnetwork% | %cpu% | %coretemp% | %memory% | <fc=#00FFFF>%disku%</fc> | %battery% | %kbd% | <fc=#00ff00>%date%</fc> |"   -- #69DFFA
+       , template = "%UnsafeStdinReader%}{ | %dynnetwork% | %cpu% %coretemp% %memory% <fc=#00FFFF>%disku%</fc> | %battery% %kbd% |<fc=#00ff00>%date%</fc> |"   -- #69DFFA
        }
