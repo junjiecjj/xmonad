@@ -4,7 +4,7 @@ Config {
        -- font = "xft:WenQuanYi Micro Hei:style=Regular:pixelsize=28",
        -- font = "xft:IntelOne Mono:style=Regular:pixelsize=24",
         font = "xft:CaskaydiaCove Nerd Font Mono:style=SemiLight:pixelsize=24",
-        additionalFonts = [ "xft:FontAwesome:size=16" ]
+        additionalFonts = [ "xft:FontAwesome:size=15" ]
        , allDesktops = True
        , overrideRedirect = True
        , textOffset = -1
